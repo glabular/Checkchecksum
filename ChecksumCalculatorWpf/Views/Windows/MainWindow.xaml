@@ -1,0 +1,34 @@
+﻿<Window
+    x:Class="ChecksumCalculatorWpf.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:cmd="clr-namespace:ChecksumCalculatorWpf.Infrastructure.Commands"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:ChecksumCalculatorWpf"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="clr-namespace:ChecksumCalculatorWpf.ViewModels"
+    xmlns:windows="clr-namespace:ChecksumCalculatorWpf.Views.Windows"
+    Title="{Binding WindowTitle}"
+    Width="700"
+    Height="450"
+    WindowStartupLocation="CenterScreen"
+    ResizeMode="CanMinimize"
+    mc:Ignorable="d">
+
+    <ContentControl Content="{Binding CurrentViewModel}" />
+
+    <ContentControl.Resources>
+        <DataTemplate DataType="{x:Type viewModels:ChecksumsViewModel}">
+            <windows:ChecksumsView />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModels:SettingsViewModel}">
+            <windows:SettingsView />
+        </DataTemplate>
+
+    </ContentControl.Resources>
+
+
+</Window>
+
+<!--FileDropCommand="{Binding ProcessFileCommand}"-->
