@@ -1,6 +1,6 @@
 # Checkchecksum
 
-### A simple and user-friendly tool to calculate file checksums. Just drop a file and get instant results!
+A simple and user-friendly tool to calculate file checksums. Just drop a file and get instant results!
 
 ## Supports
 * SHA-256
