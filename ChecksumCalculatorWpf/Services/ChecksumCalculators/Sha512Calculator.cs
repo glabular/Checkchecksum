@@ -11,7 +11,6 @@ public static class Sha512Calculator
         {
             using var sha512 = SHA512.Create();
             using FileStream fileStream = File.OpenRead(path);
-            fileStream.Position = 0;
             var hashValue = sha512.ComputeHash(fileStream);
 
             return ChecksumHelper.ByteArrayToString(hashValue);

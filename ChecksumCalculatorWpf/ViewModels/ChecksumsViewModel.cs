@@ -240,9 +240,15 @@ public class ChecksumsViewModel : ViewModelBase
     {
         AllowDrop = false;
         FileName = string.Empty;
-
         ClearTextboxes();
-        ValidateAnyAlgorithmSelected();
+
+        if (IsNoAlgorithmSelected())
+        {
+            MessageBox.Show("Please, select at least one hash algorithm.", "None selected", MessageBoxButton.OK, MessageBoxImage.Error);
+            AllowDrop = true;
+
+            return;
+        }        
 
         FileName = Path.GetFileName(filePath);
 
@@ -299,15 +305,9 @@ public class ChecksumsViewModel : ViewModelBase
         }
     }
 
-    private void ValidateAnyAlgorithmSelected()
+    private bool IsNoAlgorithmSelected()
     {
-        if (!SHA512Checked && !MD5Checked && !SHA256Checked && !SHA384Checked && !SHA1Checked)
-        {
-            MessageBox.Show("Please, select at least one hash algorithm.", "None selected", MessageBoxButton.OK, MessageBoxImage.Error);
-            AllowDrop = true;
-
-            return;
-        }
+        return !SHA512Checked && !MD5Checked && !SHA256Checked && !SHA384Checked && !SHA1Checked;
     }
 
     private string GetAllChecksums()

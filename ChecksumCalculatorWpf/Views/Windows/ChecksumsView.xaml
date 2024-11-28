@@ -38,7 +38,16 @@
             VerticalAlignment="Bottom"
             Command="{Binding CopyAllCommand}"
             Content="Copy all" />
-        
+
+        <!--<Button
+            Grid.Row="0"
+            Grid.Column="2"
+            Margin="10"
+            Padding="4"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Command="{Binding NavigateSettingsCommand}"
+            Content="Settings" />-->
 
         <CheckBox
             Grid.Row="0"

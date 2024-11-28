@@ -11,7 +11,6 @@ public static class Sha384Calculator
         {
             using var sha384 = SHA384.Create();
             using FileStream fileStream = File.OpenRead(path);
-            fileStream.Position = 0;
             var hashValue = sha384.ComputeHash(fileStream);
 
             return ChecksumHelper.ByteArrayToString(hashValue);

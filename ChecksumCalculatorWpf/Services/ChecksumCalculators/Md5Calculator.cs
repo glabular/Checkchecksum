@@ -14,7 +14,7 @@ public static class Md5Calculator
             using var fileStream = File.OpenRead(filePath);
             var checkSum = md5.ComputeHash(fileStream);
 
-            return BitConverter.ToString(checkSum).Replace("-", string.Empty);
+            return ChecksumHelper.ByteArrayToString(checkSum);
         }
         catch (IOException e)
         {

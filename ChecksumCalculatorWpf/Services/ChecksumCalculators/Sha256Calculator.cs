@@ -11,7 +11,6 @@ public static class Sha256Calculator
         {
             using var sha256 = SHA256.Create();
             using FileStream fileStream = File.OpenRead(path);
-            fileStream.Position = 0;
             var hashValue = sha256.ComputeHash(fileStream);
 
             return ChecksumHelper.ByteArrayToString(hashValue);
