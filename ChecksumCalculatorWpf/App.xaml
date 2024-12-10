@@ -11,6 +11,7 @@
         
         <Style TargetType="{x:Type TextBox}">
             <Setter Property="FontFamily" Value="{StaticResource PoppinsFont}" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
         </Style>
         
         <Style TargetType="{x:Type Button}">

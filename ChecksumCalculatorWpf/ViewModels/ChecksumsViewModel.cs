@@ -1,4 +1,6 @@
 ﻿using ChecksumCalculatorWpf.Infrastructure.Commands;
+using ChecksumCalculatorWpf.Models;
+using ChecksumCalculatorWpf.Services;
 using ChecksumCalculatorWpf.Services.ChecksumCalculators;
 using ChecksumCalculatorWpf.Stores;
 using ChecksumCalculatorWpf.ViewModels.Base;
@@ -26,18 +28,21 @@ public class ChecksumsViewModel : ViewModelBase
     private bool _isLowercaseChecked = true;
     private bool _allowDrop = true;
 
+    private readonly AppSettings _settings;
+
     public ChecksumsViewModel(NavigationStore navigationStore, Func<SettingsViewModel> createSettingsViewModel)
     {
-        CopySha256Command = new CopyChecksumCommand(() => Sha256);
-        CopySha384Command = new CopyChecksumCommand(() => Sha384);
-        CopySha512Command = new CopyChecksumCommand(() => Sha512);
-        CopySha1Command = new CopyChecksumCommand(() => Sha1);
-        CopyMd5Command = new CopyChecksumCommand(() => Md5);
-        CopyAllCommand = new CopyChecksumCommand(GetAllChecksums);
+        _settings = SettingsService.LoadSettings();
+
+        CopySha256Command = new RelayCommand(_ => CopyToClipboard(Sha256));
+        CopySha384Command = new RelayCommand(_ => CopyToClipboard(Sha384));
+        CopySha512Command = new RelayCommand(_ => CopyToClipboard(Sha512));
+        CopySha1Command = new RelayCommand(_ => CopyToClipboard(Sha1));
+        CopyMd5Command = new RelayCommand(_ => CopyToClipboard(Md5));
+        CopyAllCommand = new RelayCommand(_ => CopyToClipboard(GetAllChecksums()));
 
         NavigateSettingsCommand = new NavigateCommand(navigationStore, createSettingsViewModel);
-
-        HandleFileDropCommand = new HandleFileDropCommand<string>(OnFileDroppedAsync);
+        HandleFileDropCommand = new RelayCommandAsync<string>(OnFileDroppedAsync);
 
         CheckForEasterEgg();
     }
@@ -248,51 +253,20 @@ public class ChecksumsViewModel : ViewModelBase
             AllowDrop = true;
 
             return;
-        }        
+        }
 
         FileName = Path.GetFileName(filePath);
 
         try
         {
-            var checksumTasks = new List<Task<string>>();
-
-            if (SHA512Checked)
-            {
-                checksumTasks.Add(Task.Run(() => Sha512Calculator.GetSha512Checksum(filePath)));
-            }
-
-            if (MD5Checked)
-            {
-                checksumTasks.Add(Task.Run(() => Md5Calculator.CalculateMd5Checksum(filePath)));
-            }
-
-            if (SHA256Checked)
-            {
-                checksumTasks.Add(Task.Run(() => Sha256Calculator.GetSHA256Checksum(filePath)));
-            }
-
-            if (SHA384Checked)
-            {
-                checksumTasks.Add(Task.Run(() => Sha384Calculator.GetSha384Checksum(filePath)));
-            }
-
-            if (SHA1Checked)
-            {
-                checksumTasks.Add(Task.Run(() => Sha1Calculator.GetSha1Checksum(filePath)));
-            }
-
-            var results = await Task.WhenAll(checksumTasks);
-
-            var resultIndex = 0;
-
-            // TODO: Make independent from the order.
-            if (SHA512Checked) Sha512 = results[resultIndex++];
-            if (MD5Checked) Md5 = results[resultIndex++];
-            if (SHA256Checked) Sha256 = results[resultIndex++];
-            if (SHA384Checked) Sha384 = results[resultIndex++];
-            if (SHA1Checked) Sha1 = results[resultIndex++];
+            await CalculateAndUpdateChecksumsAsync(filePath);
 
             UpdateTextboxesCase();
+
+            if (_settings.EnableChecksumSaving)
+            {
+                SaveChecksumsToFile();
+            }
         }
         catch (Exception ex)
         {
@@ -303,6 +277,72 @@ public class ChecksumsViewModel : ViewModelBase
         {
             AllowDrop = true;
         }
+    }
+
+    private void SaveChecksumsToFile()
+    {
+        var checksums = GetChecksumsDictionary();
+        var checksumSaveService = new ChecksumSaveService();
+        checksumSaveService.SaveChecksums(FileName, checksums);
+    }
+
+    /// <summary>
+    /// Gathers the calculated checksum values and returns them in a dictionary.
+    /// The dictionary maps algorithm names (e.g., "SHA512") to their corresponding checksum values.
+    /// </summary>
+    /// <returns>A dictionary containing the algorithm names as keys and their respective checksum values as values.</returns>
+    private Dictionary<string, string> GetChecksumsDictionary()
+    {
+        var checksums = new Dictionary<string, string>();
+
+        if (!string.IsNullOrEmpty(Sha512)) checksums["SHA512"] = Sha512;
+        if (!string.IsNullOrEmpty(Md5)) checksums["MD5"] = Md5;
+        if (!string.IsNullOrEmpty(Sha256)) checksums["SHA256"] = Sha256;
+        if (!string.IsNullOrEmpty(Sha384)) checksums["SHA384"] = Sha384;
+        if (!string.IsNullOrEmpty(Sha1)) checksums["SHA1"] = Sha1;
+
+        return checksums;
+    }
+
+    private async Task CalculateAndUpdateChecksumsAsync(string filePath)
+    {
+        var checksumTasks = new List<Task<string>>();
+
+        if (SHA512Checked)
+        {
+            checksumTasks.Add(Task.Run(() => Sha512Calculator.GetSha512Checksum(filePath)));
+        }
+
+        if (MD5Checked)
+        {
+            checksumTasks.Add(Task.Run(() => Md5Calculator.CalculateMd5Checksum(filePath)));
+        }
+
+        if (SHA256Checked)
+        {
+            checksumTasks.Add(Task.Run(() => Sha256Calculator.GetSHA256Checksum(filePath)));
+        }
+
+        if (SHA384Checked)
+        {
+            checksumTasks.Add(Task.Run(() => Sha384Calculator.GetSha384Checksum(filePath)));
+        }
+
+        if (SHA1Checked)
+        {
+            checksumTasks.Add(Task.Run(() => Sha1Calculator.GetSha1Checksum(filePath)));
+        }
+
+        var results = await Task.WhenAll(checksumTasks);
+
+        var resultIndex = 0;
+
+        // TODO: Make independent from the order.
+        if (SHA512Checked) Sha512 = results[resultIndex++];
+        if (MD5Checked) Md5 = results[resultIndex++];
+        if (SHA256Checked) Sha256 = results[resultIndex++];
+        if (SHA384Checked) Sha384 = results[resultIndex++];
+        if (SHA1Checked) Sha1 = results[resultIndex++];
     }
 
     private bool IsNoAlgorithmSelected()
@@ -340,6 +380,15 @@ public class ChecksumsViewModel : ViewModelBase
         }
 
         return string.Join(Environment.NewLine, checksums);
+    }
+
+    private void CopyToClipboard(string? checksum)
+    {
+        if (!string.IsNullOrWhiteSpace(checksum))
+        {
+            Clipboard.SetText(checksum);
+            MessageBox.Show(checksum, "Copied to clipboard!");
+        }
     }
 
     private void UpdateSelectAllState()
@@ -385,7 +434,7 @@ public class ChecksumsViewModel : ViewModelBase
         SHA1Checked = isChecked;
         MD5Checked = isChecked;
     }
-
+    
     private void CheckForEasterEgg()
     {
         if (new Random().NextDouble() < 0.01) // 1% probability
