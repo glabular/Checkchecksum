@@ -261,6 +261,7 @@ public class ChecksumsViewModel : ViewModelBase
     {
         AllowDrop = false;
         FileName = string.Empty;
+
         ClearTextboxes();
 
         if (IsNoAlgorithmSelected())
