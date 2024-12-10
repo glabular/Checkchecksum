@@ -58,6 +58,7 @@
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 IsEnabled="{Binding EnableChecksumSaving}"
+                                IsReadOnly="True"
                                 Text="{Binding DefaultPathForSavingChecksums, UpdateSourceTrigger=PropertyChanged}" />
                             <Button
                                 Width="70"
@@ -71,6 +72,12 @@
                                 Height="25"
                                 Command="{Binding OpenDirectoryCommand}"
                                 Content="Open"
+                                IsEnabled="{Binding EnableChecksumSaving}" />
+                            <Button
+                                Width="70"
+                                Height="25"
+                                Command="{Binding ClearDefaultDirectoryPathCommand}"
+                                Content="Clear"
                                 IsEnabled="{Binding EnableChecksumSaving}" />
 
                         </StackPanel>

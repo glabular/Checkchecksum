@@ -19,4 +19,6 @@ public class RelayCommand : CommandBase
     {
         _execute?.Invoke(parameter);        
     }
+
+    public void RaiseCanExecuteChanged() => OnCanExecutedChanged();
 }

@@ -4,6 +4,7 @@ using ChecksumCalculatorWpf.Services;
 using ChecksumCalculatorWpf.Services.ChecksumCalculators;
 using ChecksumCalculatorWpf.Stores;
 using ChecksumCalculatorWpf.ViewModels.Base;
+using Microsoft.Win32;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
@@ -44,8 +45,11 @@ public class ChecksumsViewModel : ViewModelBase
         NavigateSettingsCommand = new NavigateCommand(navigationStore, createSettingsViewModel);
         HandleFileDropCommand = new RelayCommandAsync<string>(OnFileDroppedAsync);
 
+        InitializeCheckboxesValues();
+
         CheckForEasterEgg();
     }
+    
 
     public bool AllowDrop
     {
@@ -69,6 +73,8 @@ public class ChecksumsViewModel : ViewModelBase
             {
                 _isLowercaseChecked = value;
                 OnPropertyChanged(nameof(IsLowercaseChecked));
+                _settings.IsLowercaseChecked = value;
+                SettingsService.SaveSettings(_settings);
                 UpdateTextboxesCase();
             }
         }
@@ -155,7 +161,7 @@ public class ChecksumsViewModel : ViewModelBase
 
     public ICommand HandleFileDropCommand { get; }
 
-    #region Checkboxes bool properties
+    #region Algorithms checkboxes bool properties
     public bool SHA256Checked
     {
         get => _sha256Checked;
@@ -165,6 +171,8 @@ public class ChecksumsViewModel : ViewModelBase
             {
                 _sha256Checked = value;
                 OnPropertyChanged(nameof(SHA256Checked));
+                _settings.SHA256Checked = value;
+                SettingsService.SaveSettings(_settings);
                 UpdateSelectAllState();
             }
         }
@@ -179,6 +187,8 @@ public class ChecksumsViewModel : ViewModelBase
             {
                 _sha384Checked = value;
                 OnPropertyChanged(nameof(SHA384Checked));
+                _settings.SHA384Checked = value;
+                SettingsService.SaveSettings(_settings);
                 UpdateSelectAllState();
             }
         }
@@ -193,6 +203,8 @@ public class ChecksumsViewModel : ViewModelBase
             {
                 _sha512Checked = value;
                 OnPropertyChanged(nameof(SHA512Checked));
+                _settings.SHA512Checked = value;
+                SettingsService.SaveSettings(_settings);
                 UpdateSelectAllState();
             }
         }
@@ -207,6 +219,8 @@ public class ChecksumsViewModel : ViewModelBase
             {
                 _sha1Checked = value;
                 OnPropertyChanged(nameof(SHA1Checked));
+                _settings.SHA1Checked = value;
+                SettingsService.SaveSettings(_settings);
                 UpdateSelectAllState();
             }
         }
@@ -221,6 +235,8 @@ public class ChecksumsViewModel : ViewModelBase
             {
                 _md5Checked = value;
                 OnPropertyChanged(nameof(MD5Checked));
+                _settings.MD5Checked = value;
+                SettingsService.SaveSettings(_settings);
                 UpdateSelectAllState();
             }
         }
@@ -282,8 +298,20 @@ public class ChecksumsViewModel : ViewModelBase
     private void SaveChecksumsToFile()
     {
         var checksums = GetChecksumsDictionary();
-        var checksumSaveService = new ChecksumSaveService();
-        checksumSaveService.SaveChecksums(FileName, checksums);
+        var checksumSaveService = new ChecksumSaveService(_settings);
+        if (string.IsNullOrWhiteSpace(_settings.DefaultPathForSavingChecksums))
+        {
+            var folderDialog = new OpenFolderDialog();
+            if (folderDialog.ShowDialog() == true)
+            {
+                var chosenPath = folderDialog.FolderName;
+                checksumSaveService.SaveChecksums(FileName, checksums, chosenPath);
+            }
+        }
+        else
+        {
+            checksumSaveService.SaveChecksums(FileName, checksums);
+        }
     }
 
     /// <summary>
@@ -434,7 +462,18 @@ public class ChecksumsViewModel : ViewModelBase
         SHA1Checked = isChecked;
         MD5Checked = isChecked;
     }
-    
+
+    private void InitializeCheckboxesValues()
+    {
+        SHA256Checked = _settings.SHA256Checked;
+        SHA384Checked = _settings.SHA384Checked;
+        SHA512Checked = _settings.SHA512Checked;
+        SHA1Checked = _settings.SHA1Checked;
+        MD5Checked = _settings.MD5Checked;
+
+        IsLowercaseChecked = _settings.IsLowercaseChecked;
+    }
+
     private void CheckForEasterEgg()
     {
         if (new Random().NextDouble() < 0.01) // 1% probability

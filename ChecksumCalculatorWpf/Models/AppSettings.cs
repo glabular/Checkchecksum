@@ -21,4 +21,16 @@ public class AppSettings
     /// Gets or sets the selected file format for saving checksums.
     /// </summary>
     public FileFormat SelectedFileFormat { get; set; } = FileFormat.txt;
+
+    public bool SHA256Checked { get; set; } = false;
+
+    public bool SHA384Checked { get; set; } = false;
+
+    public bool SHA512Checked { get; set; } = true;
+
+    public bool SHA1Checked { get; set; } = false;
+
+    public bool MD5Checked { get; set; } = true;
+
+    public bool IsLowercaseChecked { get; set; } = true;
 }

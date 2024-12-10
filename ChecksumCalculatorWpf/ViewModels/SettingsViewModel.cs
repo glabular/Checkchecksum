@@ -23,10 +23,10 @@ public class SettingsViewModel : ViewModelBase
 
         NavigateChecksumsCommand = new NavigateCommand(navigationStore, createChecksumsViewModel);
 
-
         SaveCommand = new RelayCommand(SaveSettings);
         BrowseCommand = new RelayCommand(SelectAndSetFolderPath);
         OpenDirectoryCommand = new RelayCommand(OpenDirectoryInFileExplorer, CanOpenDirectory);
+        ClearDefaultDirectoryPathCommand = new RelayCommand(ClearDefaultDirectoryPath, CanClearDirectoryPath);
 
         AvailableFormatsDisplay = new ObservableCollection<string>(FileFormatDisplayMapper.GetAllDisplayNames());
         SelectedFormat = FileFormatDisplayMapper.GetDisplayName(_settings.SelectedFileFormat);
@@ -40,6 +40,8 @@ public class SettingsViewModel : ViewModelBase
 
     public ICommand OpenDirectoryCommand { get; }
 
+    public ICommand ClearDefaultDirectoryPathCommand { get; }
+
     public string DefaultPathForSavingChecksums
     {
         get => _settings.DefaultPathForSavingChecksums;
@@ -49,6 +51,10 @@ public class SettingsViewModel : ViewModelBase
             {
                 _settings.DefaultPathForSavingChecksums = value;
                 OnPropertyChanged(nameof(DefaultPathForSavingChecksums));
+
+                // Needed to add, because the buttons wouldn't change their state appropriately.
+                (OpenDirectoryCommand as RelayCommand)?.RaiseCanExecuteChanged();
+                (ClearDefaultDirectoryPathCommand as RelayCommand)?.RaiseCanExecuteChanged();
             }
         }
     }
@@ -137,5 +143,15 @@ public class SettingsViewModel : ViewModelBase
     private bool CanOpenDirectory(object? parameter)
     {
         return !string.IsNullOrEmpty(DefaultPathForSavingChecksums) && Directory.Exists(DefaultPathForSavingChecksums);
+    }
+
+    private bool CanClearDirectoryPath(object? parameter)
+    {
+        return !string.IsNullOrEmpty(DefaultPathForSavingChecksums);
+    }
+
+    private void ClearDefaultDirectoryPath(object? parameter)
+    {
+        DefaultPathForSavingChecksums = string.Empty;
     }
 }

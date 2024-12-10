@@ -8,12 +8,12 @@ public class ChecksumSaveService
 {
     private readonly AppSettings _settings;
 
-    public ChecksumSaveService()
+    public ChecksumSaveService(AppSettings settings)
     {
-        _settings = SettingsService.LoadSettings();
+        _settings = settings ?? throw new ArgumentNullException(nameof(settings));
     }
 
-    public void SaveChecksums(string fileName, Dictionary<string, string> checksums)
+    public void SaveChecksums(string fileName, Dictionary<string, string> checksums, string? directoryToSave = null)
     {
         if (string.IsNullOrWhiteSpace(fileName))
         {
@@ -25,7 +25,7 @@ public class ChecksumSaveService
             throw new ArgumentException("Checksums dictionary is empty or null.");
         }
 
-        var directory = _settings.DefaultPathForSavingChecksums;
+        var directory = directoryToSave ?? _settings.DefaultPathForSavingChecksums;
         if (!Directory.Exists(directory))
         {
             Directory.CreateDirectory(directory);
