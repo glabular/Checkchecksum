@@ -5,14 +5,14 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:ChecksumCalculatorWpf.Views.Windows"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="450"
+    d:DesignHeight="470"
     d:DesignWidth="800"
     mc:Ignorable="d">
 
     <Grid Margin="5">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="300" />
-            <ColumnDefinition Width="210" />
+            <ColumnDefinition Width="280" />
+            <ColumnDefinition Width="320" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -25,14 +25,15 @@
             Grid.Row="1"
             Grid.Column="0"
             Grid.ColumnSpan="3"
-            Margin="8 0 0 0"
+            Margin="8,0,0,0"
             Padding="2"
             Content="{Binding FileName}" />
 
         <Button
             Grid.Row="0"
             Grid.Column="2"
-            Margin="10"
+            Width="123"
+            Margin="0,0,10,10"
             Padding="4"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
@@ -54,7 +55,7 @@
             Grid.Column="1"
             Margin="16,0,40,7"
             VerticalAlignment="Bottom"
-            Content="Lowercase" 
+            Content="Lowercase"
             IsChecked="{Binding IsLowercaseChecked, Mode=TwoWay}" />
 
         <Border
@@ -87,6 +88,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="100" />
                     <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="100" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition />
@@ -112,19 +114,37 @@
 
                 <CheckBox
                     Grid.Row="0"
-                    Grid.Column="1"
+                    Grid.Column="2"
                     Content="SHA-1"
                     IsChecked="{Binding SHA1Checked, Mode=TwoWay}" />
                 <CheckBox
                     Grid.Row="1"
-                    Grid.Column="1"
+                    Grid.Column="2"
                     Content="MD5"
                     IsChecked="{Binding MD5Checked, Mode=TwoWay}" />
+
+                <CheckBox
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Content="SHA3-256"
+                    IsChecked="{Binding SHA3_256Checked, Mode=TwoWay}" />
+
+                <CheckBox
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Content="SHA3-384"
+                    IsChecked="{Binding SHA3_384Checked, Mode=TwoWay}" />
+
+                <CheckBox
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    Content="SHA3-512"
+                    IsChecked="{Binding SHA3_512Checked, Mode=TwoWay}" />
 
                 <!--  "Select All" Checkbox  -->
                 <CheckBox
                     Grid.Row="2"
-                    Grid.Column="1"
+                    Grid.Column="2"
                     Content="Select all"
                     IsChecked="{Binding SelectAllChecked, Mode=TwoWay}" />
             </Grid>
@@ -139,150 +159,207 @@
             CornerRadius="10">
             <Grid Margin="10">
                 <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="60" />
+                    <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="60" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
+                <!--  SHA-256  -->
+                <TextBlock
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Margin="0,0,10,5"
+                    VerticalAlignment="Center"
+                    Text="SHA-256" />
                 <TextBox
                     Grid.Row="0"
                     Grid.Column="1"
                     Height="26"
+                    Margin="0,0,0,5"
                     FontSize="16"
                     IsReadOnly="True"
                     Text="{Binding Sha256, UpdateSourceTrigger=PropertyChanged}" />
-
-                <TextBox
-                    Grid.Row="1"
-                    Grid.Column="1"
-                    Height="26"
-                    FontSize="16"
-                    IsReadOnly="True"
-                    Text="{Binding Sha384, UpdateSourceTrigger=PropertyChanged}" />
-
-                <TextBox
-                    Grid.Row="2"
-                    Grid.Column="1"
-                    Height="26"
-                    FontSize="16"
-                    IsReadOnly="True"
-                    Text="{Binding Sha512, UpdateSourceTrigger=PropertyChanged}" />
-
-                <TextBox
-                    Grid.Row="3"
-                    Grid.Column="1"
-                    Height="26"
-                    FontSize="16"
-                    IsReadOnly="True"
-                    Text="{Binding Sha1, UpdateSourceTrigger=PropertyChanged}" />
-
-                <TextBox
-                    Grid.Row="4"
-                    Grid.Column="1"
-                    Height="26"
-                    FontSize="16"
-                    IsReadOnly="True"
-                    Text="{Binding Md5, UpdateSourceTrigger=PropertyChanged}" />
-
-                <TextBlock
-                    Grid.Row="0"
-                    Grid.Column="0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Center">
-                    SHA-256
-                </TextBlock>
-
-                <TextBlock
-                    Grid.Row="1"
-                    Grid.Column="0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Center">
-                    SHA-384
-                </TextBlock>
-
-                <TextBlock
-                    Grid.Row="2"
-                    Grid.Column="0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Center">
-                    SHA-512
-                </TextBlock>
-
-                <TextBlock
-                    Grid.Row="3"
-                    Grid.Column="0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Center">
-                    SHA-1
-                </TextBlock>
-
-                <TextBlock
-                    Grid.Row="4"
-                    Grid.Column="0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Center">
-                    MD5
-                </TextBlock>
-
                 <Button
                     Grid.Row="0"
                     Grid.Column="2"
                     Width="50"
-                    Padding="3"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
+                    Margin="0,0,0,5"
                     Command="{Binding CopySha256Command}"
                     Content="Copy" />
 
+                <!--  SHA-384  -->
+                <TextBlock
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Margin="0,0,10,5"
+                    VerticalAlignment="Center"
+                    Text="SHA-384" />
+                <TextBox
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Height="26"
+                    Margin="0,0,0,5"
+                    FontSize="16"
+                    IsReadOnly="True"
+                    Text="{Binding Sha384, UpdateSourceTrigger=PropertyChanged}" />
                 <Button
                     Grid.Row="1"
                     Grid.Column="2"
                     Width="50"
-                    Padding="3"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
+                    Margin="0,0,0,5"
                     Command="{Binding CopySha384Command}"
                     Content="Copy" />
 
+                <!--  SHA-512  -->
+                <TextBlock
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    Margin="0,0,10,5"
+                    VerticalAlignment="Center"
+                    Text="SHA-512" />
+                <TextBox
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    Height="26"
+                    Margin="0,0,0,5"
+                    FontSize="16"
+                    IsReadOnly="True"
+                    Text="{Binding Sha512, UpdateSourceTrigger=PropertyChanged}" />
                 <Button
                     Grid.Row="2"
                     Grid.Column="2"
                     Width="50"
-                    Padding="3"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
+                    Margin="0,0,0,5"
                     Command="{Binding CopySha512Command}"
                     Content="Copy" />
 
+                <!--  SHA3 256  -->
+                <TextBlock
+                    Grid.Row="3"
+                    Grid.Column="0"
+                    Margin="0,0,10,5"
+                    VerticalAlignment="Center"
+                    Text="SHA3-256" />
+                <TextBox
+                    Grid.Row="3"
+                    Grid.Column="1"
+                    Height="26"
+                    Margin="0,0,0,5"
+                    FontSize="16"
+                    IsReadOnly="True"
+                    Text="{Binding Sha3_256, UpdateSourceTrigger=PropertyChanged}" />
                 <Button
                     Grid.Row="3"
                     Grid.Column="2"
                     Width="50"
-                    Padding="3"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Command="{Binding CopySha1Command}"
+                    Margin="0,0,0,5"
+                    Command="{Binding CopySha3_256Command}"
                     Content="Copy" />
 
+                <!--  SHA3 384  -->
+                <TextBlock
+                    Grid.Row="4"
+                    Grid.Column="0"
+                    Margin="0,0,10,5"
+                    VerticalAlignment="Center"
+                    Text="SHA3-384" />
+                <TextBox
+                    Grid.Row="4"
+                    Grid.Column="1"
+                    Height="26"
+                    Margin="0,0,0,5"
+                    FontSize="16"
+                    IsReadOnly="True"
+                    Text="{Binding Sha3_384, UpdateSourceTrigger=PropertyChanged}" />
                 <Button
                     Grid.Row="4"
                     Grid.Column="2"
                     Width="50"
-                    Padding="3"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Command="{Binding CopyMd5Command}"
+                    Margin="0,0,0,5"
+                    Command="{Binding CopySha3_384Command}"
                     Content="Copy" />
 
+                <!--  SHA3-512  -->
+                <TextBlock
+                    Grid.Row="5"
+                    Grid.Column="0"
+                    Margin="0,0,10,5"
+                    VerticalAlignment="Center"
+                    Text="SHA3-512" />
+                <TextBox
+                    Grid.Row="5"
+                    Grid.Column="1"
+                    Height="26"
+                    Margin="0,0,0,5"
+                    FontSize="16"
+                    IsReadOnly="True"
+                    Text="{Binding Sha3_512, UpdateSourceTrigger=PropertyChanged}" />
+                <Button
+                    Grid.Row="5"
+                    Grid.Column="2"
+                    Width="50"
+                    Margin="0,0,0,5"
+                    Command="{Binding CopySha3_512Command}"
+                    Content="Copy" />
 
+                <!--  SHA-1  -->
+                <TextBlock
+                    Grid.Row="6"
+                    Grid.Column="0"
+                    Margin="0,0,10,5"
+                    VerticalAlignment="Center"
+                    Text="SHA-1" />
+                <TextBox
+                    Grid.Row="6"
+                    Grid.Column="1"
+                    Height="26"
+                    Margin="0,0,0,5"
+                    FontSize="16"
+                    IsReadOnly="True"
+                    Text="{Binding Sha1, UpdateSourceTrigger=PropertyChanged}" />
+                <Button
+                    Grid.Row="6"
+                    Grid.Column="2"
+                    Width="50"
+                    Margin="0,0,0,5"
+                    Command="{Binding CopySha1Command}"
+                    Content="Copy" />
+
+                <!--  MD5  -->
+                <TextBlock
+                    Grid.Row="7"
+                    Grid.Column="0"
+                    Margin="0,0,10,5"
+                    VerticalAlignment="Center"
+                    Text="MD5" />
+                <TextBox
+                    Grid.Row="7"
+                    Grid.Column="1"
+                    Height="26"
+                    Margin="0,0,0,5"
+                    FontSize="16"
+                    IsReadOnly="True"
+                    Text="{Binding Md5, UpdateSourceTrigger=PropertyChanged}" />
+                <Button
+                    Grid.Row="7"
+                    Grid.Column="2"
+                    Width="50"
+                    Margin="0,0,0,5"
+                    Command="{Binding CopyMd5Command}"
+                    Content="Copy" />
             </Grid>
         </Border>
+
+
     </Grid>
 </UserControl>

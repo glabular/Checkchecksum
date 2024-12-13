@@ -9,8 +9,8 @@
     xmlns:viewModels="clr-namespace:ChecksumCalculatorWpf.ViewModels"
     xmlns:windows="clr-namespace:ChecksumCalculatorWpf.Views.Windows"
     Title="{Binding WindowTitle}"
-    Width="700"
-    Height="450"
+    Width="780"
+    Height="500"
     WindowStartupLocation="CenterScreen"
     ResizeMode="CanMinimize"
     mc:Ignorable="d">

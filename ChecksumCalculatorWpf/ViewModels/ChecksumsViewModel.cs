@@ -19,12 +19,21 @@ public class ChecksumsViewModel : ViewModelBase
     private string _sha512 = string.Empty;
     private string _sha1 = string.Empty;
     private string _md5 = string.Empty;
+    private string _sha3_256 = string.Empty;
+    private string _sha3_384 = string.Empty;
+    private string _sha3_512 = string.Empty;
 
     private bool _sha256Checked;
     private bool _sha384Checked;
     private bool _sha512Checked = true;
+
     private bool _sha1Checked;
     private bool _md5Checked = true;
+
+    private bool _sha3_256Checked;
+    private bool _sha3_384Checked;
+    private bool _sha3_512Checked;
+
     private bool _selectAllChecked;
     private bool _isLowercaseChecked = true;
     private bool _allowDrop = true;
@@ -40,6 +49,9 @@ public class ChecksumsViewModel : ViewModelBase
         CopySha512Command = new RelayCommand(_ => CopyToClipboard(Sha512));
         CopySha1Command = new RelayCommand(_ => CopyToClipboard(Sha1));
         CopyMd5Command = new RelayCommand(_ => CopyToClipboard(Md5));
+        CopySha3_256Command = new RelayCommand(_ => CopyToClipboard(Sha3_256));
+        CopySha3_384Command = new RelayCommand(_ => CopyToClipboard(Sha3_384));
+        CopySha3_512Command = new RelayCommand(_ => CopyToClipboard(Sha3_512));
         CopyAllCommand = new RelayCommand(_ => CopyToClipboard(GetAllChecksums()));
 
         NavigateSettingsCommand = new NavigateCommand(navigationStore, createSettingsViewModel);
@@ -48,8 +60,7 @@ public class ChecksumsViewModel : ViewModelBase
         InitializeCheckboxesValues();
 
         CheckForEasterEgg();
-    }
-    
+    }    
 
     public bool AllowDrop
     {
@@ -143,6 +154,35 @@ public class ChecksumsViewModel : ViewModelBase
         }
     }
 
+    public string Sha3_256
+    {
+        get => _sha3_256;
+        set
+        {
+            _sha3_256 = value;
+            OnPropertyChanged(nameof(Sha3_256));
+        }
+    }
+    public string Sha3_384
+    {
+        get => _sha3_384;
+        set
+        {
+            _sha3_384 = value;
+            OnPropertyChanged(nameof(Sha3_384));
+        }
+    }
+
+    public string Sha3_512
+    {
+        get => _sha3_512;
+        set
+        {
+            _sha3_512 = value;
+            OnPropertyChanged(nameof(Sha3_512));
+        }
+    }
+
     #region Copy commands
     public ICommand CopySha256Command { get; }
 
@@ -153,6 +193,12 @@ public class ChecksumsViewModel : ViewModelBase
     public ICommand CopySha1Command { get; }
 
     public ICommand CopyMd5Command { get; } 
+
+    public ICommand CopySha3_256Command { get; } 
+
+    public ICommand CopySha3_384Command { get; } 
+
+    public ICommand CopySha3_512Command { get; } 
 
     public ICommand CopyAllCommand { get; } 
     #endregion
@@ -242,6 +288,54 @@ public class ChecksumsViewModel : ViewModelBase
         }
     }
 
+    public bool SHA3_256Checked
+    {
+        get => _sha3_256Checked;
+        set
+        {
+            if (_allowDrop && _sha3_256Checked != value)
+            {
+                _sha3_256Checked = value;
+                OnPropertyChanged(nameof(SHA3_256Checked));
+                _settings.SHA3_256Checked = value;
+                SettingsService.SaveSettings(_settings);
+                UpdateSelectAllState();
+            }
+        }
+    }
+
+    public bool SHA3_384Checked
+    {
+        get => _sha3_384Checked;
+        set
+        {
+            if (_allowDrop && _sha3_384Checked != value)
+            {
+                _sha3_384Checked = value;
+                OnPropertyChanged(nameof(SHA3_384Checked));
+                _settings.SHA3_384Checked = value;
+                SettingsService.SaveSettings(_settings);
+                UpdateSelectAllState();
+            }
+        }
+    }
+
+    public bool SHA3_512Checked
+    {
+        get => _sha3_512Checked;
+        set
+        {
+            if (_allowDrop && _sha3_512Checked != value)
+            {
+                _sha3_512Checked = value;
+                OnPropertyChanged(nameof(SHA3_512Checked));
+                _settings.SHA3_512Checked = value;
+                SettingsService.SaveSettings(_settings);
+                UpdateSelectAllState();
+            }
+        }
+    }
+
     public bool SelectAllChecked
     {
         get => _selectAllChecked;
@@ -261,7 +355,6 @@ public class ChecksumsViewModel : ViewModelBase
     {
         AllowDrop = false;
         FileName = string.Empty;
-
         ClearTextboxes();
 
         if (IsNoAlgorithmSelected())
@@ -329,6 +422,9 @@ public class ChecksumsViewModel : ViewModelBase
         if (!string.IsNullOrEmpty(Sha256)) checksums["SHA256"] = Sha256;
         if (!string.IsNullOrEmpty(Sha384)) checksums["SHA384"] = Sha384;
         if (!string.IsNullOrEmpty(Sha1)) checksums["SHA1"] = Sha1;
+        if (!string.IsNullOrEmpty(Sha3_256)) checksums["SHA3_256"] = Sha3_256;
+        if (!string.IsNullOrEmpty(Sha3_384)) checksums["SHA3_384"] = Sha3_384;
+        if (!string.IsNullOrEmpty(Sha3_512)) checksums["SHA3_512"] = Sha3_512;
 
         return checksums;
     }
@@ -362,6 +458,21 @@ public class ChecksumsViewModel : ViewModelBase
             checksumTasks.Add(Task.Run(() => Sha1Calculator.GetSha1Checksum(filePath)));
         }
 
+        if (SHA3_256Checked)
+        {
+            checksumTasks.Add(Task.Run(() => Sha3_256Calculator.GetSha3_256Checksum(filePath)));
+        }
+        
+        if (SHA3_384Checked)
+        {
+            checksumTasks.Add(Task.Run(() => Sha3_384Calculator.GetSha3_384Checksum(filePath)));
+        }
+
+        if (SHA3_512Checked)
+        {
+            checksumTasks.Add(Task.Run(() => Sha3_512Calculator.GetSha3_512Checksum(filePath)));
+        }
+
         var results = await Task.WhenAll(checksumTasks);
 
         var resultIndex = 0;
@@ -372,11 +483,14 @@ public class ChecksumsViewModel : ViewModelBase
         if (SHA256Checked) Sha256 = results[resultIndex++];
         if (SHA384Checked) Sha384 = results[resultIndex++];
         if (SHA1Checked) Sha1 = results[resultIndex++];
+        if (SHA3_256Checked) Sha3_256 = results[resultIndex++];
+        if (SHA3_384Checked) Sha3_384 = results[resultIndex++];
+        if (SHA3_512Checked) Sha3_512 = results[resultIndex++];
     }
 
     private bool IsNoAlgorithmSelected()
     {
-        return !SHA512Checked && !MD5Checked && !SHA256Checked && !SHA384Checked && !SHA1Checked;
+        return !SHA512Checked && !MD5Checked && !SHA256Checked && !SHA384Checked && !SHA1Checked && !SHA3_256Checked && !SHA3_384Checked && !SHA3_512Checked;
     }
 
     private string GetAllChecksums()
@@ -408,21 +522,40 @@ public class ChecksumsViewModel : ViewModelBase
             checksums.Add($"MD5: {Md5}"); 
         }
 
+        if (!string.IsNullOrWhiteSpace(Sha3_256))
+        { 
+            checksums.Add($"SHA3-256: {Sha3_256}"); 
+        }
+
+        if (!string.IsNullOrWhiteSpace(Sha3_384))
+        { 
+            checksums.Add($"SHA3-384: {Sha3_384}"); 
+        }
+
+        if (!string.IsNullOrWhiteSpace(Sha3_512))
+        { 
+            checksums.Add($"SHA3-512: {Sha3_512}"); 
+        }
+
         return string.Join(Environment.NewLine, checksums);
     }
 
-    private void CopyToClipboard(string? checksum)
+    private static void CopyToClipboard(string? checksum)
     {
         if (!string.IsNullOrWhiteSpace(checksum))
         {
             Clipboard.SetText(checksum);
-            MessageBox.Show(checksum, "Copied to clipboard!");
+
+            if (true) // TODO: Add "Don't show again".
+            {
+                MessageBox.Show(checksum, "Copied to clipboard!");
+            }
         }
     }
 
     private void UpdateSelectAllState()
     {
-        _selectAllChecked = SHA256Checked && SHA384Checked && SHA512Checked && SHA1Checked && MD5Checked;
+        _selectAllChecked = SHA256Checked && SHA384Checked && SHA512Checked && SHA1Checked && MD5Checked && SHA3_256Checked && SHA3_384Checked && SHA3_512Checked;
         OnPropertyChanged(nameof(SelectAllChecked));
     }
 
@@ -435,6 +568,9 @@ public class ChecksumsViewModel : ViewModelBase
             Sha512 = Sha512.ToLower();
             Sha1 = Sha1.ToLower();
             Md5 = Md5.ToLower();
+            Sha3_256 = Sha3_256.ToLower();
+            Sha3_384 = Sha3_384.ToLower();
+            Sha3_512 = Sha3_512.ToLower();
         }
         else
         {
@@ -443,6 +579,9 @@ public class ChecksumsViewModel : ViewModelBase
             Sha512 = Sha512.ToUpper();
             Sha1 = Sha1.ToUpper();
             Md5 = Md5.ToUpper();
+            Sha3_256 = Sha3_256.ToUpper();
+            Sha3_384= Sha3_384.ToUpper();
+            Sha3_512= Sha3_512.ToUpper();
         }
     }
 
@@ -453,6 +592,9 @@ public class ChecksumsViewModel : ViewModelBase
         Sha512 = string.Empty;
         Sha1 = string.Empty;
         Md5 = string.Empty;
+        Sha3_256 = string.Empty;
+        Sha3_384 = string.Empty;
+        Sha3_512 = string.Empty;
     }
 
     private void UpdateAllCheckboxes(bool isChecked)
@@ -462,6 +604,9 @@ public class ChecksumsViewModel : ViewModelBase
         SHA512Checked = isChecked;
         SHA1Checked = isChecked;
         MD5Checked = isChecked;
+        SHA3_256Checked = isChecked;
+        SHA3_384Checked = isChecked;
+        SHA3_512Checked = isChecked;
     }
 
     private void InitializeCheckboxesValues()
@@ -471,6 +616,9 @@ public class ChecksumsViewModel : ViewModelBase
         SHA512Checked = _settings.SHA512Checked;
         SHA1Checked = _settings.SHA1Checked;
         MD5Checked = _settings.MD5Checked;
+        SHA3_256Checked = _settings.SHA3_256Checked;
+        SHA3_384Checked = _settings.SHA3_384Checked;
+        SHA3_512Checked = _settings.SHA3_512Checked;
 
         IsLowercaseChecked = _settings.IsLowercaseChecked;
     }
@@ -479,11 +627,16 @@ public class ChecksumsViewModel : ViewModelBase
     {
         if (new Random().NextDouble() < 0.01) // 1% probability
         {
-            Sha256 = "🎉 You found the Easter Egg!";
-            Sha384 = "🎉 You found the Easter Egg!";
-            Sha512 = "🎉 You found the Easter Egg!";
-            Sha1 = "🎉 You found the Easter Egg!";
-            Md5 = "🎉 You found the Easter Egg!";
+            var easterEggMessage = "🎉 You found the Easter Egg!";
+
+            Sha256 = easterEggMessage;
+            Sha384 = easterEggMessage;
+            Sha512 = easterEggMessage;
+            Sha1 = easterEggMessage;
+            Md5 = easterEggMessage;
+            Sha3_256 = easterEggMessage;
+            Sha3_384 = easterEggMessage;
+            Sha3_512 = easterEggMessage;
         }
     }
 }

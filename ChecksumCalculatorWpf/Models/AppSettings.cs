@@ -32,5 +32,11 @@ public class AppSettings
 
     public bool MD5Checked { get; set; } = true;
 
+    public bool SHA3_256Checked { get; set; } = false;
+
+    public bool SHA3_384Checked { get; set; } = false;
+
+    public bool SHA3_512Checked { get; set; } = false;
+
     public bool IsLowercaseChecked { get; set; } = true;
 }
