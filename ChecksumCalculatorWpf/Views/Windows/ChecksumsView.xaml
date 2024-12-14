@@ -48,6 +48,7 @@
             HorizontalAlignment="Right"
             VerticalAlignment="Top"
             Command="{Binding NavigateSettingsCommand}"
+            IsEnabled="{Binding AllowDrop}"
             Content="Settings" />
 
         <CheckBox
@@ -189,6 +190,26 @@
                     FontSize="16"
                     IsReadOnly="True"
                     Text="{Binding Sha256, UpdateSourceTrigger=PropertyChanged}" />
+                <ProgressBar
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Height="26"
+                    Margin="0,0,0,5"
+                    Maximum="100"
+                    Minimum="0"
+                    Value="{Binding Sha256Progress, UpdateSourceTrigger=PropertyChanged}">
+                    <ProgressBar.Style>
+                        <Style TargetType="ProgressBar">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsCalculatingSha256}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ProgressBar.Style>
+                </ProgressBar>
+
                 <Button
                     Grid.Row="0"
                     Grid.Column="2"
@@ -212,6 +233,25 @@
                     FontSize="16"
                     IsReadOnly="True"
                     Text="{Binding Sha384, UpdateSourceTrigger=PropertyChanged}" />
+                <ProgressBar
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Height="26"
+                    Margin="0,0,0,5"
+                    Maximum="100"
+                    Minimum="0"
+                    Value="{Binding Sha384Progress, UpdateSourceTrigger=PropertyChanged}">
+                    <ProgressBar.Style>
+                        <Style TargetType="ProgressBar">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsCalculatingSha384}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ProgressBar.Style>
+                </ProgressBar>
                 <Button
                     Grid.Row="1"
                     Grid.Column="2"
@@ -235,6 +275,25 @@
                     FontSize="16"
                     IsReadOnly="True"
                     Text="{Binding Sha512, UpdateSourceTrigger=PropertyChanged}" />
+                <ProgressBar
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    Height="26"
+                    Margin="0,0,0,5"
+                    Maximum="100"
+                    Minimum="0"
+                    Value="{Binding Sha512Progress, UpdateSourceTrigger=PropertyChanged}">
+                    <ProgressBar.Style>
+                        <Style TargetType="ProgressBar">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsCalculatingSha512}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ProgressBar.Style>
+                </ProgressBar>
                 <Button
                     Grid.Row="2"
                     Grid.Column="2"
@@ -258,6 +317,25 @@
                     FontSize="16"
                     IsReadOnly="True"
                     Text="{Binding Sha3_256, UpdateSourceTrigger=PropertyChanged}" />
+                <ProgressBar
+                    Grid.Row="3"
+                    Grid.Column="1"
+                    Height="26"
+                    Margin="0,0,0,5"
+                    Maximum="100"
+                    Minimum="0"
+                    Value="{Binding Sha3_256Progress, UpdateSourceTrigger=PropertyChanged}">
+                    <ProgressBar.Style>
+                        <Style TargetType="ProgressBar">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsCalculatingSha3_256}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ProgressBar.Style>
+                </ProgressBar>
                 <Button
                     Grid.Row="3"
                     Grid.Column="2"
@@ -281,6 +359,25 @@
                     FontSize="16"
                     IsReadOnly="True"
                     Text="{Binding Sha3_384, UpdateSourceTrigger=PropertyChanged}" />
+                <ProgressBar
+                    Grid.Row="4"
+                    Grid.Column="1"
+                    Height="26"
+                    Margin="0,0,0,5"
+                    Maximum="100"
+                    Minimum="0"
+                    Value="{Binding Sha3_384Progress, UpdateSourceTrigger=PropertyChanged}">
+                    <ProgressBar.Style>
+                        <Style TargetType="ProgressBar">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsCalculatingSha3_384}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ProgressBar.Style>
+                </ProgressBar>
                 <Button
                     Grid.Row="4"
                     Grid.Column="2"
@@ -304,6 +401,25 @@
                     FontSize="16"
                     IsReadOnly="True"
                     Text="{Binding Sha3_512, UpdateSourceTrigger=PropertyChanged}" />
+                <ProgressBar
+                    Grid.Row="5"
+                    Grid.Column="1"
+                    Height="26"
+                    Margin="0,0,0,5"
+                    Maximum="100"
+                    Minimum="0"
+                    Value="{Binding Sha3_512Progress, UpdateSourceTrigger=PropertyChanged}">
+                    <ProgressBar.Style>
+                        <Style TargetType="ProgressBar">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsCalculatingSha3_512}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ProgressBar.Style>
+                </ProgressBar>
                 <Button
                     Grid.Row="5"
                     Grid.Column="2"
@@ -327,6 +443,25 @@
                     FontSize="16"
                     IsReadOnly="True"
                     Text="{Binding Sha1, UpdateSourceTrigger=PropertyChanged}" />
+                <ProgressBar
+                    Grid.Row="6"
+                    Grid.Column="1"
+                    Height="26"
+                    Margin="0,0,0,5"
+                    Maximum="100"
+                    Minimum="0"
+                    Value="{Binding Sha1Progress, UpdateSourceTrigger=PropertyChanged}">
+                    <ProgressBar.Style>
+                        <Style TargetType="ProgressBar">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsCalculatingSha1}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ProgressBar.Style>
+                </ProgressBar>
                 <Button
                     Grid.Row="6"
                     Grid.Column="2"
@@ -350,6 +485,25 @@
                     FontSize="16"
                     IsReadOnly="True"
                     Text="{Binding Md5, UpdateSourceTrigger=PropertyChanged}" />
+                <ProgressBar
+                    Grid.Row="7"
+                    Grid.Column="1"
+                    Height="26"
+                    Margin="0,0,0,5"
+                    Maximum="100"
+                    Minimum="0"
+                    Value="{Binding Md5Progress, UpdateSourceTrigger=PropertyChanged}">
+                    <ProgressBar.Style>
+                        <Style TargetType="ProgressBar">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsCalculatingMd5}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ProgressBar.Style>
+                </ProgressBar>
                 <Button
                     Grid.Row="7"
                     Grid.Column="2"

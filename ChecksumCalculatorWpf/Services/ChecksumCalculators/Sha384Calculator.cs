@@ -5,15 +5,27 @@ namespace ChecksumCalculatorWpf.Services.ChecksumCalculators;
 
 public static class Sha384Calculator
 {
-    public static string GetSha384Checksum(string path)
+    public static async Task<string> GetSha384ChecksumAsync(string path, IProgress<double> progress = null)
     {
         try
         {
             using var sha384 = SHA384.Create();
             using FileStream fileStream = File.OpenRead(path);
-            var hashValue = sha384.ComputeHash(fileStream);
+            var buffer = new byte[8192];
+            long totalBytes = fileStream.Length;
+            long bytesRead = 0;
 
-            return ChecksumHelper.ByteArrayToString(hashValue);
+            int read;
+            while ((read = await fileStream.ReadAsync(buffer)) > 0)
+            {
+                sha384.TransformBlock(buffer, 0, read, null, 0);
+                bytesRead += read;
+
+                progress?.Report((double)bytesRead / totalBytes * 100);
+            }
+
+            sha384.TransformFinalBlock(Array.Empty<byte>(), 0, 0);
+            return ChecksumHelper.ByteArrayToString(sha384.Hash);
         }
         catch (IOException e)
         {

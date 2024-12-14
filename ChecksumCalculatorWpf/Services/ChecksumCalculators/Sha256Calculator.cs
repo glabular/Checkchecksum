@@ -5,15 +5,29 @@ namespace ChecksumCalculatorWpf.Services.ChecksumCalculators;
 
 public static class Sha256Calculator
 {
-    public static string GetSHA256Checksum(string path)
+    public static async Task<string> GetSHA256ChecksumAsync(string path, IProgress<double> progress = null)
     {
         try
         {
             using var sha256 = SHA256.Create();
             using FileStream fileStream = File.OpenRead(path);
-            var hashValue = sha256.ComputeHash(fileStream);
+            var buffer = new byte[8192]; // 8 KB buffer
+            long totalBytes = fileStream.Length;
+            long bytesRead = 0;
 
-            return ChecksumHelper.ByteArrayToString(hashValue);
+            int read;
+            while ((read = await fileStream.ReadAsync(buffer)) > 0)
+            {
+                sha256.TransformBlock(buffer, 0, read, null, 0);
+                bytesRead += read;
+
+                progress?.Report((double)bytesRead / totalBytes * 100);
+            }
+
+            // Complete the hash calculation
+            sha256.TransformFinalBlock(Array.Empty<byte>(), 0, 0);
+
+            return ChecksumHelper.ByteArrayToString(sha256.Hash);
         }
         catch (IOException e)
         {

@@ -1,4 +1,5 @@
-﻿using ChecksumCalculatorWpf.Infrastructure.Commands;
+﻿using ChecksumCalculatorWpf.Extensions;
+using ChecksumCalculatorWpf.Infrastructure.Commands;
 using ChecksumCalculatorWpf.Models;
 using ChecksumCalculatorWpf.Services;
 using ChecksumCalculatorWpf.Services.ChecksumCalculators;
@@ -14,6 +15,7 @@ namespace ChecksumCalculatorWpf.ViewModels;
 public class ChecksumsViewModel : ViewModelBase
 {
     private string _fileName = string.Empty;
+
     private string _sha256 = string.Empty;
     private string _sha384 = string.Empty;
     private string _sha512 = string.Empty;
@@ -26,10 +28,8 @@ public class ChecksumsViewModel : ViewModelBase
     private bool _sha256Checked;
     private bool _sha384Checked;
     private bool _sha512Checked = true;
-
     private bool _sha1Checked;
     private bool _md5Checked = true;
-
     private bool _sha3_256Checked;
     private bool _sha3_384Checked;
     private bool _sha3_512Checked;
@@ -37,6 +37,24 @@ public class ChecksumsViewModel : ViewModelBase
     private bool _selectAllChecked;
     private bool _isLowercaseChecked = true;
     private bool _allowDrop = true;
+
+    private bool _isCalculatingSha256;
+    private bool _isCalculatingSha384;
+    private bool _isCalculatingSha512;
+    private bool _isCalculatingSha1;
+    private bool _isCalculatingMd5;
+    private bool _isCalculatingSha3_256;
+    private bool _isCalculatingSha3_384;
+    private bool _isCalculatingSha3_512;
+
+    private double _sha256Progress;
+    private double _sha384Progress;
+    private double _sha512Progress;
+    private double _sha1Progress;
+    private double _Md5Progress;
+    private double _sha3_256Progress;
+    private double _sha3_384Progress;
+    private double _sha3_512Progress;
 
     private readonly AppSettings _settings;
 
@@ -60,7 +78,7 @@ public class ChecksumsViewModel : ViewModelBase
         InitializeCheckboxesValues();
 
         CheckForEasterEgg();
-    }    
+    }
 
     public bool AllowDrop
     {
@@ -80,7 +98,7 @@ public class ChecksumsViewModel : ViewModelBase
         get => _isLowercaseChecked;
         set
         {
-            if (_isLowercaseChecked != value)
+            if (_allowDrop && _isLowercaseChecked != value)
             {
                 _isLowercaseChecked = value;
                 OnPropertyChanged(nameof(IsLowercaseChecked));
@@ -90,6 +108,8 @@ public class ChecksumsViewModel : ViewModelBase
             }
         }
     }
+
+    public bool IsSettingsEnabled => !AllowDrop;
 
     public string FileName
     {
@@ -102,8 +122,91 @@ public class ChecksumsViewModel : ViewModelBase
                 OnPropertyChanged(nameof(FileName));
             }
         }
-    } 
+    }
 
+    #region IsCalculating properties
+    public bool IsCalculatingSha256
+    {
+        get => _isCalculatingSha256;
+        set
+        {
+            _isCalculatingSha256 = value;
+            OnPropertyChanged(nameof(IsCalculatingSha256));
+        }
+    }
+    
+    public bool IsCalculatingSha384
+    {
+        get => _isCalculatingSha384;
+        set
+        {
+            _isCalculatingSha384 = value;
+            OnPropertyChanged(nameof(IsCalculatingSha384));
+        }
+    }
+    
+    public bool IsCalculatingSha512
+    {
+        get => _isCalculatingSha512;
+        set
+        {
+            _isCalculatingSha512 = value;
+            OnPropertyChanged(nameof(IsCalculatingSha512));
+        }
+    }
+    
+    public bool IsCalculatingSha1
+    {
+        get => _isCalculatingSha1;
+        set
+        {
+            _isCalculatingSha1 = value;
+            OnPropertyChanged(nameof(IsCalculatingSha1));
+        }
+    }
+
+    public bool IsCalculatingMd5
+    {
+        get => _isCalculatingMd5;
+        set
+        {
+            _isCalculatingMd5 = value;
+            OnPropertyChanged(nameof(IsCalculatingMd5));
+        }
+    }
+
+    public bool IsCalculatingSha3_256
+    {
+        get => _isCalculatingSha3_256;
+        set
+        {
+            _isCalculatingSha3_256 = value;
+            OnPropertyChanged(nameof(IsCalculatingSha3_256));
+        }
+    }
+
+    public bool IsCalculatingSha3_384
+    {
+        get => _isCalculatingSha3_384;
+        set
+        {
+            _isCalculatingSha3_384 = value;
+            OnPropertyChanged(nameof(IsCalculatingSha3_384));
+        }
+    }
+
+    public bool IsCalculatingSha3_512
+    {
+        get => _isCalculatingSha3_512;
+        set
+        {
+            _isCalculatingSha3_512 = value;
+            OnPropertyChanged(nameof(IsCalculatingSha3_512));
+        }
+    }
+    #endregion    
+    
+    #region Checksum strings
     public string Sha256
     {
         get => _sha256;
@@ -163,6 +266,7 @@ public class ChecksumsViewModel : ViewModelBase
             OnPropertyChanged(nameof(Sha3_256));
         }
     }
+
     public string Sha3_384
     {
         get => _sha3_384;
@@ -182,6 +286,7 @@ public class ChecksumsViewModel : ViewModelBase
             OnPropertyChanged(nameof(Sha3_512));
         }
     }
+    #endregion
 
     #region Copy commands
     public ICommand CopySha256Command { get; }
@@ -192,20 +297,98 @@ public class ChecksumsViewModel : ViewModelBase
 
     public ICommand CopySha1Command { get; }
 
-    public ICommand CopyMd5Command { get; } 
+    public ICommand CopyMd5Command { get; }
 
-    public ICommand CopySha3_256Command { get; } 
+    public ICommand CopySha3_256Command { get; }
 
-    public ICommand CopySha3_384Command { get; } 
+    public ICommand CopySha3_384Command { get; }
 
-    public ICommand CopySha3_512Command { get; } 
+    public ICommand CopySha3_512Command { get; }
 
-    public ICommand CopyAllCommand { get; } 
+    public ICommand CopyAllCommand { get; }
     #endregion
 
-    public ICommand NavigateSettingsCommand { get; }
+    #region Progress bar values
+    public double Sha256Progress
+    {
+        get => _sha256Progress;
+        set
+        {
+            _sha256Progress = value;
+            OnPropertyChanged(nameof(Sha256Progress));
+        }
+    }
 
-    public ICommand HandleFileDropCommand { get; }
+    public double Sha384Progress
+    {
+        get => _sha384Progress;
+        set
+        {
+            _sha384Progress = value;
+            OnPropertyChanged(nameof(Sha384Progress));
+        }
+    }
+
+    public double Sha512Progress
+    {
+        get => _sha512Progress;
+        set
+        {
+            _sha512Progress = value;
+            OnPropertyChanged(nameof(Sha512Progress));
+        }
+    }
+
+    public double Sha3_256Progress
+    {
+        get => _sha3_256Progress;
+        set
+        {
+            _sha3_256Progress = value;
+            OnPropertyChanged(nameof(Sha3_256Progress));
+        }
+    }
+
+    public double Sha3_384Progress
+    {
+        get => _sha3_384Progress;
+        set
+        {
+            _sha3_384Progress = value;
+            OnPropertyChanged(nameof(Sha3_384Progress));
+        }
+    }
+
+    public double Sha3_512Progress
+    {
+        get => _sha3_512Progress;
+        set
+        {
+            _sha3_512Progress = value;
+            OnPropertyChanged(nameof(Sha3_512Progress));
+        }
+    }
+
+    public double Md5Progress
+    {
+        get => _Md5Progress;
+        set
+        {
+            _Md5Progress = value;
+            OnPropertyChanged(nameof(Md5Progress));
+        }
+    }
+
+    public double Sha1Progress
+    {
+        get => _sha1Progress;
+        set
+        {
+            _sha1Progress = value;
+            OnPropertyChanged(nameof(Sha1Progress));
+        }
+    }
+    #endregion
 
     #region Algorithms checkboxes bool properties
     public bool SHA256Checked
@@ -348,8 +531,12 @@ public class ChecksumsViewModel : ViewModelBase
                 UpdateAllCheckboxes(value);
             }
         }
-    } 
+    }
     #endregion
+
+    public ICommand NavigateSettingsCommand { get; }
+
+    public ICommand HandleFileDropCommand { get; }
 
     private async Task OnFileDroppedAsync(string filePath)
     {
@@ -370,8 +557,6 @@ public class ChecksumsViewModel : ViewModelBase
         try
         {
             await CalculateAndUpdateChecksumsAsync(filePath);
-
-            UpdateTextboxesCase();
 
             if (_settings.EnableChecksumSaving)
             {
@@ -431,61 +616,161 @@ public class ChecksumsViewModel : ViewModelBase
 
     private async Task CalculateAndUpdateChecksumsAsync(string filePath)
     {
-        var checksumTasks = new List<Task<string>>();
+        var checksumTasks = new List<Task>();
 
         if (SHA512Checked)
         {
-            checksumTasks.Add(Task.Run(() => Sha512Calculator.GetSha512Checksum(filePath)));
+            checksumTasks.Add(Task.Run(async () =>
+            {
+                IsCalculatingSha512 = true;
+                try
+                {
+                    var progress = new Progress<double>(percent => Sha512Progress = percent);
+                    var result = await Sha512Calculator.GetSha512ChecksumAsync(filePath, progress);
+                    Sha512 = result.CorrectStringCase(IsLowercaseChecked);
+                }
+                finally
+                {
+                    Sha512Progress = 0;
+                    IsCalculatingSha512 = false;
+                }
+            }));
         }
 
         if (MD5Checked)
         {
-            checksumTasks.Add(Task.Run(() => Md5Calculator.CalculateMd5Checksum(filePath)));
+            checksumTasks.Add(Task.Run(async () =>
+            {
+                IsCalculatingMd5 = true;
+                try
+                {
+                    var progress = new Progress<double>(percent => Md5Progress = percent);
+                    var result = await Md5Calculator.GetMd5ChecksumAsync(filePath, progress);
+                    Md5 = result.CorrectStringCase(IsLowercaseChecked);
+                }
+                finally
+                {
+                    Md5Progress = 0;
+                    IsCalculatingMd5 = false;
+                }
+            }));
         }
 
         if (SHA256Checked)
         {
-            checksumTasks.Add(Task.Run(() => Sha256Calculator.GetSHA256Checksum(filePath)));
+            checksumTasks.Add(Task.Run(async () =>
+            {
+                IsCalculatingSha256 = true;
+                try
+                {
+                    var progress = new Progress<double>(percent => Sha256Progress = percent);
+                    var result = await Sha256Calculator.GetSHA256ChecksumAsync(filePath, progress);
+                    Sha256 = result.CorrectStringCase(IsLowercaseChecked);
+                }
+                finally
+                {
+                    Sha256Progress = 0;
+                    IsCalculatingSha256 = false;
+                }
+            }));
         }
 
         if (SHA384Checked)
         {
-            checksumTasks.Add(Task.Run(() => Sha384Calculator.GetSha384Checksum(filePath)));
+            checksumTasks.Add(Task.Run(async () =>
+            {
+                IsCalculatingSha384 = true;
+                try
+                {
+                    var progress = new Progress<double>(percent => Sha384Progress = percent);
+                    var result = await Sha384Calculator.GetSha384ChecksumAsync(filePath, progress);
+                    Sha384 = result.CorrectStringCase(IsLowercaseChecked);
+                }
+                finally
+                {
+                    Sha384Progress = 0;
+                    IsCalculatingSha384 = false;
+                }
+            }));
         }
 
         if (SHA1Checked)
         {
-            checksumTasks.Add(Task.Run(() => Sha1Calculator.GetSha1Checksum(filePath)));
+            checksumTasks.Add(Task.Run(async () =>
+            {
+                IsCalculatingSha1 = true;
+                try
+                {
+                    var progress = new Progress<double>(percent => Sha1Progress = percent);
+                    var result = await Sha1Calculator.GetSha1ChecksumAsync(filePath, progress);
+                    Sha1 = result.CorrectStringCase(IsLowercaseChecked);
+                }
+                finally
+                {
+                    Sha1Progress = 0;
+                    IsCalculatingSha1 = false;
+                }
+            }));
         }
 
         if (SHA3_256Checked)
         {
-            checksumTasks.Add(Task.Run(() => Sha3_256Calculator.GetSha3_256Checksum(filePath)));
+            checksumTasks.Add(Task.Run(async () =>
+            {
+                IsCalculatingSha3_256 = true;
+                try
+                {
+                    var progress = new Progress<double>(percent => Sha3_256Progress = percent);
+                    var result = await Sha3_256Calculator.GetSha3_256ChecksumAsync(filePath, progress);
+                    Sha3_256 = result.CorrectStringCase(IsLowercaseChecked);
+                }
+                finally
+                {
+                    Sha3_256Progress = 0;
+                    IsCalculatingSha3_256 = false;
+                }
+            }));
         }
-        
+
         if (SHA3_384Checked)
         {
-            checksumTasks.Add(Task.Run(() => Sha3_384Calculator.GetSha3_384Checksum(filePath)));
+            checksumTasks.Add(Task.Run(async () =>
+            {
+                IsCalculatingSha3_384 = true;
+                try
+                {
+                    var progress = new Progress<double>(percent => Sha3_384Progress = percent);
+                    var result = await Sha3_384Calculator.GetSha3_384ChecksumAsync(filePath, progress);
+                    Sha3_384 = result.CorrectStringCase(IsLowercaseChecked);
+                }
+                finally
+                {
+                    Sha3_384Progress = 0;
+                    IsCalculatingSha3_384 = false;
+                }
+            }));
         }
 
         if (SHA3_512Checked)
         {
-            checksumTasks.Add(Task.Run(() => Sha3_512Calculator.GetSha3_512Checksum(filePath)));
+            checksumTasks.Add(Task.Run(async () =>
+            {
+                IsCalculatingSha3_512 = true;
+                try
+                {
+                    var progress = new Progress<double>(percent => Sha3_512Progress = percent);
+                    var result = await Sha3_512Calculator.GetSha3_512ChecksumAsync(filePath, progress);
+                    Sha3_512 = result.CorrectStringCase(IsLowercaseChecked);
+                }
+                finally
+                {
+                    Sha3_512Progress = 0;
+                    IsCalculatingSha3_512 = false;
+                }
+            }));
         }
 
-        var results = await Task.WhenAll(checksumTasks);
-
-        var resultIndex = 0;
-
-        // TODO: Make independent from the order.
-        if (SHA512Checked) Sha512 = results[resultIndex++];
-        if (MD5Checked) Md5 = results[resultIndex++];
-        if (SHA256Checked) Sha256 = results[resultIndex++];
-        if (SHA384Checked) Sha384 = results[resultIndex++];
-        if (SHA1Checked) Sha1 = results[resultIndex++];
-        if (SHA3_256Checked) Sha3_256 = results[resultIndex++];
-        if (SHA3_384Checked) Sha3_384 = results[resultIndex++];
-        if (SHA3_512Checked) Sha3_512 = results[resultIndex++];
+        await Task.WhenAll(checksumTasks);
     }
 
     private bool IsNoAlgorithmSelected()
@@ -497,14 +782,14 @@ public class ChecksumsViewModel : ViewModelBase
     {
         var checksums = new List<string>();
 
-        if (!string.IsNullOrWhiteSpace(Sha256)) 
-        { 
-            checksums.Add($"SHA-256: {Sha256}"); 
+        if (!string.IsNullOrWhiteSpace(Sha256))
+        {
+            checksums.Add($"SHA-256: {Sha256}");
         }
 
         if (!string.IsNullOrWhiteSpace(Sha384))
-        { 
-            checksums.Add($"SHA-384: {Sha384}"); 
+        {
+            checksums.Add($"SHA-384: {Sha384}");
         }
 
         if (!string.IsNullOrWhiteSpace(Sha512))
@@ -518,23 +803,23 @@ public class ChecksumsViewModel : ViewModelBase
         }
 
         if (!string.IsNullOrWhiteSpace(Md5))
-        { 
-            checksums.Add($"MD5: {Md5}"); 
+        {
+            checksums.Add($"MD5: {Md5}");
         }
 
         if (!string.IsNullOrWhiteSpace(Sha3_256))
-        { 
-            checksums.Add($"SHA3-256: {Sha3_256}"); 
+        {
+            checksums.Add($"SHA3-256: {Sha3_256}");
         }
 
         if (!string.IsNullOrWhiteSpace(Sha3_384))
-        { 
-            checksums.Add($"SHA3-384: {Sha3_384}"); 
+        {
+            checksums.Add($"SHA3-384: {Sha3_384}");
         }
 
         if (!string.IsNullOrWhiteSpace(Sha3_512))
-        { 
-            checksums.Add($"SHA3-512: {Sha3_512}"); 
+        {
+            checksums.Add($"SHA3-512: {Sha3_512}");
         }
 
         return string.Join(Environment.NewLine, checksums);
@@ -580,8 +865,8 @@ public class ChecksumsViewModel : ViewModelBase
             Sha1 = Sha1.ToUpper();
             Md5 = Md5.ToUpper();
             Sha3_256 = Sha3_256.ToUpper();
-            Sha3_384= Sha3_384.ToUpper();
-            Sha3_512= Sha3_512.ToUpper();
+            Sha3_384 = Sha3_384.ToUpper();
+            Sha3_512 = Sha3_512.ToUpper();
         }
     }
 
