@@ -22,8 +22,8 @@ public partial class App : Application
         base.OnStartup(e);
 
         var settings = SettingsService.LoadSettings();
-        ApplyLanguage(settings.Language);
 
+        LanguageManager.ApplyLanguage(settings.Language);
         FontManager.ChangeFont(settings.FontName);        
 
         _navigationStore.CurrentViewModel = new ChecksumsViewModel(_navigationStore, CreateSettingsViewModel);
@@ -34,25 +34,7 @@ public partial class App : Application
         };
 
         MainWindow.Show();
-    }
-
-    /// <summary>
-    /// Applies the specified language to the application by setting the current culture and UI culture
-    /// and updating the resource dictionary with the appropriate language-specific resources.
-    /// </summary>
-    /// <param name="lang">The language code (e.g., "en-US" or "fr-FR") to apply to the application.</param>
-    public static void ApplyLanguage(string lang)
-    {
-        Thread.CurrentThread.CurrentCulture = new CultureInfo(lang);
-        Thread.CurrentThread.CurrentUICulture = new CultureInfo(lang);
-        Application.Current.Resources.MergedDictionaries.Clear();
-        var resdict = new ResourceDictionary()
-        {
-            Source = new Uri($"/Resources/Dictionary-{lang}.xaml", UriKind.Relative)
-        };
-
-        Application.Current.Resources.MergedDictionaries.Add(resdict);
-    }
+    }    
 
     /// <summary>
     /// Retrieves a localized string from application resources.

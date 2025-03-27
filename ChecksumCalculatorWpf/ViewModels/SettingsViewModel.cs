@@ -33,12 +33,10 @@ public class SettingsViewModel : ViewModelBase
         AvailableFormatsDisplay = [.. FileFormatDisplayMapper.GetAllDisplayNames()];
         SelectedFormat = FileFormatDisplayMapper.GetDisplayName(_settings.SelectedFileFormat);
 
-        AvailableLanguages = [.. LanguageMappings.Keys];
+        AvailableLanguages = [.. LanguageManager.LanguageMappings.Keys];
 
-        // TODO???
-        _selectedLanguage = LanguageMappings.ContainsValue(_settings.Language)
-            ? LanguageMappings.First(x => x.Value == _settings.Language).Key
-            : "English";
+        _selectedLanguage = LanguageManager.LanguageMappings
+            .FirstOrDefault(x => x.Value == _settings.Language).Key ?? LanguageManager.DefaultLanguage;
 
         AvailableFonts = [.. FontManager.GetAvailableFonts()];
 
@@ -108,8 +106,8 @@ public class SettingsViewModel : ViewModelBase
             {
                 _selectedLanguage = value;
                 OnPropertyChanged(nameof(SelectedLanguage));
-                App.ApplyLanguage(LanguageMappings[_selectedLanguage]);
-                _settings.Language = LanguageMappings[_selectedLanguage];
+                LanguageManager.ApplyLanguage(LanguageManager.LanguageMappings[_selectedLanguage]);
+                _settings.Language = LanguageManager.LanguageMappings[_selectedLanguage];
                 SettingsService.SaveSettings(_settings);
             }            
         }
@@ -142,13 +140,7 @@ public class SettingsViewModel : ViewModelBase
     public ObservableCollection<string> AvailableLanguages { get; }
 
     public ObservableCollection<string> AvailableFonts { get; }
-
-    public Dictionary<string, string> LanguageMappings { get; } = new()
-    {
-        { "English", "en-US" },
-        { "Русский", "ru-RU" }
-    };
-
+    
     /// <summary>
     /// The selected file format for saving checksums
     /// </summary>
@@ -167,7 +159,6 @@ public class SettingsViewModel : ViewModelBase
             }
         }
     }
-
     
     private void SelectAndSetFolderPath(object? parameter)
     {
