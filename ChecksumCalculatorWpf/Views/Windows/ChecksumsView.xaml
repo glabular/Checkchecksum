@@ -21,13 +21,13 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <Label
+        <TextBlock
             Grid.Row="1"
             Grid.Column="0"
             Grid.ColumnSpan="3"
             Margin="8,0,0,0"
             Padding="2"
-            Content="{Binding FileName}" />
+            Text="{Binding FileName}" />
 
         <Button
             Grid.Row="0"
@@ -38,7 +38,7 @@
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
             Command="{Binding CopyAllCommand}"
-            Content="Copy all" />
+            Content="{DynamicResource CopyAllButton}" />
 
         <Button
             Grid.Row="0"
@@ -49,14 +49,14 @@
             VerticalAlignment="Top"
             Command="{Binding NavigateSettingsCommand}"
             IsEnabled="{Binding AllowDrop}"
-            Content="Settings" />
+            Content="{DynamicResource SettingsButton}" />
 
         <CheckBox
             Grid.Row="0"
             Grid.Column="1"
             Margin="16,0,40,7"
             VerticalAlignment="Bottom"
-            Content="Lowercase"
+            Content="{DynamicResource LowercaseCheckbox}"
             IsChecked="{Binding IsLowercaseChecked, Mode=TwoWay}" />
 
         <Border
@@ -70,11 +70,10 @@
             BorderThickness="2"
             CornerRadius="15"
             Drop="OnFileDrop">
-            <TextBlock
+            <TextBlock Text="{DynamicResource DropFileText}"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 FontSize="18">
-                Drop file here
             </TextBlock>
         </Border>
 
@@ -146,7 +145,7 @@
                 <CheckBox
                     Grid.Row="2"
                     Grid.Column="2"
-                    Content="Select all"
+                    Content="{DynamicResource SelectAllCheckbox}"
                     IsChecked="{Binding SelectAllChecked, Mode=TwoWay}" />
             </Grid>
         </GroupBox>
@@ -216,7 +215,7 @@
                     Width="50"
                     Margin="0,0,0,5"
                     Command="{Binding CopySha256Command}"
-                    Content="Copy" />
+                    Content="{DynamicResource CopyButton}" />
 
                 <!--  SHA-384  -->
                 <TextBlock
@@ -258,7 +257,7 @@
                     Width="50"
                     Margin="0,0,0,5"
                     Command="{Binding CopySha384Command}"
-                    Content="Copy" />
+                    Content="{DynamicResource CopyButton}" />
 
                 <!--  SHA-512  -->
                 <TextBlock
@@ -300,7 +299,7 @@
                     Width="50"
                     Margin="0,0,0,5"
                     Command="{Binding CopySha512Command}"
-                    Content="Copy" />
+                    Content="{DynamicResource CopyButton}" />
 
                 <!--  SHA3 256  -->
                 <TextBlock
@@ -342,7 +341,7 @@
                     Width="50"
                     Margin="0,0,0,5"
                     Command="{Binding CopySha3_256Command}"
-                    Content="Copy" />
+                    Content="{DynamicResource CopyButton}" />
 
                 <!--  SHA3 384  -->
                 <TextBlock
@@ -384,7 +383,7 @@
                     Width="50"
                     Margin="0,0,0,5"
                     Command="{Binding CopySha3_384Command}"
-                    Content="Copy" />
+                    Content="{DynamicResource CopyButton}" />
 
                 <!--  SHA3-512  -->
                 <TextBlock
@@ -426,7 +425,7 @@
                     Width="50"
                     Margin="0,0,0,5"
                     Command="{Binding CopySha3_512Command}"
-                    Content="Copy" />
+                    Content="{DynamicResource CopyButton}" />
 
                 <!--  SHA-1  -->
                 <TextBlock
@@ -468,7 +467,7 @@
                     Width="50"
                     Margin="0,0,0,5"
                     Command="{Binding CopySha1Command}"
-                    Content="Copy" />
+                    Content="{DynamicResource CopyButton}" />
 
                 <!--  MD5  -->
                 <TextBlock
@@ -510,7 +509,7 @@
                     Width="50"
                     Margin="0,0,0,5"
                     Command="{Binding CopyMd5Command}"
-                    Content="Copy" />
+                    Content="{DynamicResource CopyButton}" />
             </Grid>
         </Border>
 

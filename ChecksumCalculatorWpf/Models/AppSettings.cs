@@ -22,6 +22,13 @@ public class AppSettings
     /// </summary>
     public FileFormat SelectedFileFormat { get; set; } = FileFormat.txt;
 
+    /// <summary>
+    /// Gets or sets the language for the application.
+    /// </summary>
+    public string Language { get; set; } = "English"; // Default to English
+
+    public string FontName { get; set; } = "Onest Light";
+
     public bool SHA256Checked { get; set; } = false;
 
     public bool SHA384Checked { get; set; } = false;
@@ -38,5 +45,5 @@ public class AppSettings
 
     public bool SHA3_512Checked { get; set; } = false;
 
-    public bool IsLowercaseChecked { get; set; } = true;
+    public bool IsLowercaseChecked { get; set; } = true;    
 }

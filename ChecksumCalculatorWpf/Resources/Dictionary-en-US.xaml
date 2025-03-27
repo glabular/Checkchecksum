@@ -1,0 +1,27 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:System="clr-namespace:System;assembly=System.Runtime">
+    
+    <System:String x:Key="DropFileText">Drop file here</System:String>
+    <System:String x:Key="CopyAllButton">Copy all</System:String>
+    <System:String x:Key="SaveChecksumHeader">Save checksums to a file</System:String>
+    <System:String x:Key="Enable">Enable</System:String>
+    <System:String x:Key="DefaultPath">Default path</System:String>
+    <System:String x:Key="SetPathButton">Set</System:String>
+    <System:String x:Key="OpenPathButton">Open</System:String>
+    <System:String x:Key="ClearPathButton">Clear</System:String>
+    <System:String x:Key="FormatLabel">Format</System:String>
+    <System:String x:Key="LanguageHeader">Language</System:String>
+    <System:String x:Key="SelectLanguage">Select language</System:String>
+    <System:String x:Key="BackButton">⬅ Back</System:String>
+    <System:String x:Key="SettingsButton">Settings</System:String>
+    <System:String x:Key="LowercaseCheckbox">Lowercase</System:String>
+    <System:String x:Key="CopyButton">Copy</System:String>
+    <System:String x:Key="SelectAllCheckbox">Select all</System:String>
+    <System:String x:Key="NoneSelectedTitle">None selected</System:String>
+    <System:String x:Key="SelectAlgorithmMessage">Please, select at least one hash algorithm.</System:String>
+    <System:String x:Key="ErrorReadingFileMessage">Error reading file</System:String>
+    <System:String x:Key="CopiedToClipboardMessage">Copied to clipboard</System:String>
+    <System:String x:Key="EasterEgg">🎉 You found the Easter Egg!</System:String>
+    
+</ResourceDictionary>

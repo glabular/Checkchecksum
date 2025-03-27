@@ -9,7 +9,9 @@ public class SettingsService
     private static readonly string _settingsDirectory = Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
         "Checkchecksum");
+
     private static readonly string _settingsFilePath = Path.Combine(_settingsDirectory, "settings.json");
+
     private static readonly JsonSerializerOptions _jsonSerializerOptions = new() 
     { 
         WriteIndented = true, PropertyNameCaseInsensitive = true 

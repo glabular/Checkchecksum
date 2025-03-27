@@ -1,0 +1,27 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:System="clr-namespace:System;assembly=System.Runtime">
+
+    <System:String x:Key="DropFileText">Перетащите файл сюда</System:String>
+    <System:String x:Key="CopyAllButton">Скопировать всё</System:String>
+    <System:String x:Key="SaveChecksumHeader">Сохранять контрольные суммы в файл</System:String>
+    <System:String x:Key="Enable">Включить</System:String>
+    <System:String x:Key="DefaultPath">Путь по умолчанию</System:String>
+    <System:String x:Key="SetPathButton">Установить</System:String>
+    <System:String x:Key="OpenPathButton">Открыть</System:String>
+    <System:String x:Key="ClearPathButton">Очистить</System:String>
+    <System:String x:Key="FormatLabel">Формат</System:String>
+    <System:String x:Key="LanguageHeader">Язык</System:String>
+    <System:String x:Key="SelectLanguage">Выберите язык</System:String>
+    <System:String x:Key="BackButton">⬅ Назад</System:String>
+    <System:String x:Key="SettingsButton">Настройки</System:String>
+    <System:String x:Key="LowercaseCheckbox">Строчные буквы</System:String>
+    <System:String x:Key="CopyButton">Скопир.</System:String>
+    <System:String x:Key="SelectAllCheckbox">Выбрать все</System:String>
+    <System:String x:Key="NoneSelectedTitle">Ничего не выбрано</System:String>
+    <System:String x:Key="SelectAlgorithmMessage">Пожалуйста, выберите хотя бы один хэш алгоритм.</System:String>
+    <System:String x:Key="ErrorReadingFileMessage">Ошибка при чтении файла</System:String>
+    <System:String x:Key="CopiedToClipboardMessage">Скопировано в буфер</System:String>
+    <System:String x:Key="EasterEgg">🎉 Вы нашли пасхалку!</System:String>
+</ResourceDictionary>
+    

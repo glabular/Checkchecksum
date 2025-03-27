@@ -16,6 +16,8 @@ public class SettingsViewModel : ViewModelBase
 {
     private readonly AppSettings _settings;
     private FileFormat _selectedFormat;
+    private string _selectedLanguage;
+    private string _selectedFont;
 
     public SettingsViewModel(NavigationStore navigationStore, Func<ChecksumsViewModel> createChecksumsViewModel)
     {
@@ -23,18 +25,27 @@ public class SettingsViewModel : ViewModelBase
 
         NavigateChecksumsCommand = new NavigateCommand(navigationStore, createChecksumsViewModel);
 
-        SaveCommand = new RelayCommand(SaveSettings);
+        
         BrowseCommand = new RelayCommand(SelectAndSetFolderPath);
         OpenDirectoryCommand = new RelayCommand(OpenDirectoryInFileExplorer, CanOpenDirectory);
         ClearDefaultDirectoryPathCommand = new RelayCommand(ClearDefaultDirectoryPath, CanClearDirectoryPath);
 
-        AvailableFormatsDisplay = new ObservableCollection<string>(FileFormatDisplayMapper.GetAllDisplayNames());
+        AvailableFormatsDisplay = [.. FileFormatDisplayMapper.GetAllDisplayNames()];
         SelectedFormat = FileFormatDisplayMapper.GetDisplayName(_settings.SelectedFileFormat);
+
+        AvailableLanguages = [.. LanguageMappings.Keys];
+
+        // TODO???
+        _selectedLanguage = LanguageMappings.ContainsValue(_settings.Language)
+            ? LanguageMappings.First(x => x.Value == _settings.Language).Key
+            : "English";
+
+        AvailableFonts = [.. FontManager.GetAvailableFonts()];
+
+        _selectedFont = _settings.FontName;
     }
 
     public ICommand NavigateChecksumsCommand { get; }
-
-    public ICommand SaveCommand { get; }
 
     public ICommand BrowseCommand { get; }
 
@@ -50,6 +61,7 @@ public class SettingsViewModel : ViewModelBase
             if (_settings.DefaultPathForSavingChecksums != value)
             {
                 _settings.DefaultPathForSavingChecksums = value;
+                SettingsService.SaveSettings(_settings);
                 OnPropertyChanged(nameof(DefaultPathForSavingChecksums));
 
                 // Needed to add, because the buttons wouldn't change their state appropriately.
@@ -67,6 +79,7 @@ public class SettingsViewModel : ViewModelBase
             if (_settings.EnableChecksumSaving != value)
             {
                 _settings.EnableChecksumSaving = value;
+                SettingsService.SaveSettings(_settings);
                 OnPropertyChanged(nameof(EnableChecksumSaving));
             }
         }
@@ -80,7 +93,40 @@ public class SettingsViewModel : ViewModelBase
             if (_settings.CreateNewFileForEachChecksum != value)
             {
                 _settings.CreateNewFileForEachChecksum = value;
+                SettingsService.SaveSettings(_settings);
                 OnPropertyChanged(nameof(CreateNewFileForEachChecksum));
+            }
+        }
+    }
+
+    public string SelectedLanguage
+    {
+        get => _selectedLanguage;
+        set
+        {
+            if (_selectedLanguage != value)
+            {
+                _selectedLanguage = value;
+                OnPropertyChanged(nameof(SelectedLanguage));
+                App.ApplyLanguage(LanguageMappings[_selectedLanguage]);
+                _settings.Language = LanguageMappings[_selectedLanguage];
+                SettingsService.SaveSettings(_settings);
+            }            
+        }
+    }
+
+    public string SelectedFont
+    {
+        get => _selectedFont;
+        set
+        {
+            if (_selectedFont != value)
+            {
+                _selectedFont = value;
+                OnPropertyChanged(nameof(SelectedFont));
+                _settings.FontName = value;
+                SettingsService.SaveSettings(_settings);
+                FontManager.ChangeFont(value);
             }
         }
     }
@@ -89,6 +135,19 @@ public class SettingsViewModel : ViewModelBase
     /// The list of available formats for saving checksums.
     /// </summary>
     public ObservableCollection<string> AvailableFormatsDisplay { get; }
+
+    /// <summary>
+    /// The list of available languages for the application UI.
+    /// </summary>
+    public ObservableCollection<string> AvailableLanguages { get; }
+
+    public ObservableCollection<string> AvailableFonts { get; }
+
+    public Dictionary<string, string> LanguageMappings { get; } = new()
+    {
+        { "English", "en-US" },
+        { "Русский", "ru-RU" }
+    };
 
     /// <summary>
     /// The selected file format for saving checksums
@@ -103,17 +162,13 @@ public class SettingsViewModel : ViewModelBase
             {
                 _selectedFormat = newFormat.Value;
                 _settings.SelectedFileFormat = _selectedFormat;
+                SettingsService.SaveSettings(_settings);
                 OnPropertyChanged(nameof(SelectedFormat));
             }
         }
     }
 
-    private void SaveSettings(object? parameter)
-    {
-        SettingsService.SaveSettings(_settings);
-        MessageBox.Show("Settings saved successfully!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
-    }
-
+    
     private void SelectAndSetFolderPath(object? parameter)
     {
         var folderDialog = new OpenFolderDialog();
@@ -153,5 +208,5 @@ public class SettingsViewModel : ViewModelBase
     private void ClearDefaultDirectoryPath(object? parameter)
     {
         DefaultPathForSavingChecksums = string.Empty;
-    }
+    }    
 }

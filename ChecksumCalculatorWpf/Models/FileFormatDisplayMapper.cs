@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ChecksumCalculatorWpf.Models;
+﻿namespace ChecksumCalculatorWpf.Models;
 
 /// <summary>
 /// Class was created to bind FileFormat enum with displaying text in the UI.

@@ -6,6 +6,7 @@ using ChecksumCalculatorWpf.Services.ChecksumCalculators;
 using ChecksumCalculatorWpf.Stores;
 using ChecksumCalculatorWpf.ViewModels.Base;
 using Microsoft.Win32;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
@@ -546,7 +547,9 @@ public class ChecksumsViewModel : ViewModelBase
 
         if (IsNoAlgorithmSelected())
         {
-            MessageBox.Show("Please, select at least one hash algorithm.", "None selected", MessageBoxButton.OK, MessageBoxImage.Error);
+            var title = App.GetLocalizedString("NoneSelectedTitle");
+            var message = App.GetLocalizedString("SelectAlgorithmMessage");
+            MessageBox.Show(message, title, MessageBoxButton.OK, MessageBoxImage.Error);
             AllowDrop = true;
 
             return;
@@ -565,7 +568,8 @@ public class ChecksumsViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"Error reading file: {ex.Message}");
+            var message = App.GetLocalizedString("ErrorReadingFileMessage");
+            MessageBox.Show($"{message}: {ex.Message}");
             FileName = string.Empty;
         }
         finally
@@ -833,7 +837,8 @@ public class ChecksumsViewModel : ViewModelBase
 
             if (true) // TODO: Add "Don't show again".
             {
-                MessageBox.Show(checksum, "Copied to clipboard!");
+                var message = App.GetLocalizedString("CopiedToClipboardMessage");
+                MessageBox.Show(checksum, message);
             }
         }
     }
@@ -912,7 +917,7 @@ public class ChecksumsViewModel : ViewModelBase
     {
         if (new Random().NextDouble() < 0.01) // 1% probability
         {
-            var easterEggMessage = "🎉 You found the Easter Egg!";
+            var easterEggMessage = App.GetLocalizedString("EasterEgg");
 
             Sha256 = easterEggMessage;
             Sha384 = easterEggMessage;

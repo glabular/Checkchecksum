@@ -9,8 +9,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Resources\Fonts\Poppins-Regular.ttf" />
+    <None Remove="Resources\Fonts\Onest-Light.ttf" />
+    <None Remove="Resources\Fonts\Ubuntu-Regular.ttf" />
     <None Remove="settings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Remove="Resources\Dictionary-en-US.xaml" />
+    <Page Remove="Resources\Dictionary-ru-RU.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,7 +24,21 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Resources\Fonts\Poppins-Regular.ttf" />
+    <Resource Include="Resources\Dictionary-en-US.xaml" />
+    <Resource Include="Resources\Dictionary-ru-RU.xaml" />
+    <Resource Include="Resources\Fonts\Onest-Light.ttf" />
+    <Resource Include="Resources\Fonts\Ubuntu-Regular.ttf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Licenses\" />
+    <Folder Include="Properties\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Licenses\UFL.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
