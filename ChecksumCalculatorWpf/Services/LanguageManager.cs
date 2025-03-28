@@ -17,16 +17,17 @@ public static class LanguageManager
     /// Applies the specified language to the application by setting the current culture and UI culture
     /// and updating the resource dictionary with the appropriate language-specific resources.
     /// </summary>
-    /// <param name="lang">The language code (e.g., "en-US" or "fr-FR") to apply to the application.</param>
-    public static void ApplyLanguage(string lang)
+    /// <param name="cultureId">The language code (e.g., "en-US" or "fr-FR") to apply to the application.</param>
+    public static void ApplyLanguage(string cultureId)
     {
-        Thread.CurrentThread.CurrentCulture = new CultureInfo(lang);
-        Thread.CurrentThread.CurrentUICulture = new CultureInfo(lang);
+        Thread.CurrentThread.CurrentCulture = new CultureInfo(cultureId);
+        Thread.CurrentThread.CurrentUICulture = new CultureInfo(cultureId);
+
         Application.Current.Resources.MergedDictionaries.Clear();
 
         var resdict = new ResourceDictionary()
         {
-            Source = new Uri($"/Resources/Dictionary-{lang}.xaml", UriKind.Relative)
+            Source = new Uri($"/Resources/Dictionary-{cultureId}.xaml", UriKind.Relative)
         };
 
         Application.Current.Resources.MergedDictionaries.Add(resdict);
