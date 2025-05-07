@@ -174,7 +174,6 @@ public class SettingsViewModel : ViewModelBase
     {
         try
         {
-            throw new Exception("Text");
             Process.Start(new ProcessStartInfo
             {
                 FileName = DefaultPathForSavingChecksums,
