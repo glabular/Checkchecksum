@@ -33,9 +33,12 @@ public partial class ChecksumsView : UserControl
 
         if (files.Length > 1)
         {
+            var message = App.GetLocalizedString("MultipleFilesDroppedMessage", firstFile);
+            var title = App.GetLocalizedString("OnlyOneFileAllowedTitle");
+
             var userChoice = MessageBox.Show(
-                $"Multiple files dropped. Do you want to process the first file?\n{firstFile}",
-                "Only one file is allowed to be processed at a time.",
+                message,
+                title,
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Question);
 

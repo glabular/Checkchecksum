@@ -125,7 +125,7 @@
                             <TextBlock
                                 Margin="5,0,10,0"
                                 VerticalAlignment="Center"
-                                Text="Select Font" />
+                                Text="{DynamicResource SelectFont}" />
                             <ComboBox
                                 Width="200"
                                 Margin="5"

@@ -1,0 +1,40 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:System="clr-namespace:System;assembly=System.Runtime">
+
+    <System:String x:Key="DropFileText">Suelta el archivo aquí</System:String>
+    <System:String x:Key="CopyAllButton">Copiar todo</System:String>
+    <System:String x:Key="SaveChecksumHeader">Guardar sumas de comprobación en un archivo</System:String>
+    <System:String x:Key="Enable">Habilitar</System:String>
+    <System:String x:Key="DefaultPath">Ruta predeterminada</System:String>
+    <System:String x:Key="SetPathButton">Establecer</System:String>
+    <System:String x:Key="OpenPathButton">Abrir</System:String>
+    <System:String x:Key="ClearPathButton">Limpiar</System:String>
+    <System:String x:Key="FormatLabel">Formato</System:String>
+    <System:String x:Key="LanguageHeader">Idioma</System:String>
+    <System:String x:Key="SelectLanguage">Seleccionar idioma</System:String>
+    <System:String x:Key="BackButton">⬅ Atrás</System:String>
+    <System:String x:Key="SettingsButton">Configuraciones</System:String>
+    <System:String x:Key="LowercaseCheckbox">Minúsculas</System:String>
+    <System:String x:Key="CopyButton">Copiar</System:String>
+    <System:String x:Key="SelectAllCheckbox">Seleccionar todo</System:String>
+    <System:String x:Key="NoneSelectedTitle">Ninguno seleccionado</System:String>
+    <System:String x:Key="SelectAlgorithmMessage">Por favor, selecciona al menos un algoritmo de hash.</System:String>
+    <System:String x:Key="ErrorReadingFileMessage">Error al leer el archivo</System:String>
+    <System:String x:Key="CopiedToClipboardMessage">Copiado al portapapeles</System:String>
+    <System:String x:Key="EasterEgg">🎉 ¡Has encontrado el huevo de pascua!</System:String>
+    <System:String x:Key="OnlyOneFileAllowedTitle">Solo se puede procesar un archivo a la vez.</System:String>
+    <System:String x:Key="SelectFont">Seleccionar fuente</System:String>
+    <System:String x:Key="Algorithms">Algoritmos</System:String>
+
+    <System:String x:Key="MultipleFilesDroppedMessage">
+        Se soltaron varios archivos.\n¿Quieres procesar el primer archivo?\n{0}
+    </System:String>
+
+    <System:String x:Key="FailedToOpenDirectoryMessage">
+        No se pudo abrir el directorio:\n{0}
+    </System:String>
+
+    <System:String x:Key="Error">Error</System:String>
+
+</ResourceDictionary>

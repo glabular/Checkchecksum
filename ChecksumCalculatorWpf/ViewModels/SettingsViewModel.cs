@@ -174,6 +174,7 @@ public class SettingsViewModel : ViewModelBase
     {
         try
         {
+            throw new Exception("Text");
             Process.Start(new ProcessStartInfo
             {
                 FileName = DefaultPathForSavingChecksums,
@@ -182,7 +183,10 @@ public class SettingsViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"Failed to open the directory: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            var message = App.GetLocalizedString("FailedToOpenDirectoryMessage", ex.Message);
+            var title = App.GetLocalizedString("Error");
+
+            MessageBox.Show(message, title, MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 

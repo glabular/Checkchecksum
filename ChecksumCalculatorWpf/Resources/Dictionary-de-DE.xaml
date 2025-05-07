@@ -1,0 +1,40 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:System="clr-namespace:System;assembly=System.Runtime">
+
+    <System:String x:Key="DropFileText">Datei hier ablegen</System:String>
+    <System:String x:Key="CopyAllButton">Alle kopieren</System:String>
+    <System:String x:Key="SaveChecksumHeader">Prüfsummen in Datei speichern</System:String>
+    <System:String x:Key="Enable">Aktivieren</System:String>
+    <System:String x:Key="DefaultPath">Standardpfad</System:String>
+    <System:String x:Key="SetPathButton">Festlegen</System:String>
+    <System:String x:Key="OpenPathButton">Öffnen</System:String>
+    <System:String x:Key="ClearPathButton">Löschen</System:String>
+    <System:String x:Key="FormatLabel">Format</System:String>
+    <System:String x:Key="LanguageHeader">Sprache</System:String>
+    <System:String x:Key="SelectLanguage">Sprache auswählen</System:String>
+    <System:String x:Key="BackButton">⬅ Zurück</System:String>
+    <System:String x:Key="SettingsButton">Einstellungen</System:String>
+    <System:String x:Key="LowercaseCheckbox">Kleinbuchstaben</System:String>
+    <System:String x:Key="CopyButton">Kopieren</System:String>
+    <System:String x:Key="SelectAllCheckbox">Alle auswählen</System:String>
+    <System:String x:Key="NoneSelectedTitle">Keine ausgewählt</System:String>
+    <System:String x:Key="SelectAlgorithmMessage">Bitte wählen Sie mindestens einen Hash-Algorithmus aus.</System:String>
+    <System:String x:Key="ErrorReadingFileMessage">Fehler beim Lesen der Datei</System:String>
+    <System:String x:Key="CopiedToClipboardMessage">In die Zwischenablage kopiert</System:String>
+    <System:String x:Key="EasterEgg">🎉 Du hast das Easter Egg gefunden!</System:String>
+    <System:String x:Key="OnlyOneFileAllowedTitle">Es darf jeweils nur eine Datei verarbeitet werden.</System:String>
+    <System:String x:Key="SelectFont">Schriftart auswählen</System:String>
+    <System:String x:Key="Algorithms">Algorithmen</System:String>
+
+    <System:String x:Key="MultipleFilesDroppedMessage">
+        Mehrere Dateien wurden abgelegt.\nMöchten Sie nur die erste verarbeiten?\n{0}
+    </System:String>
+
+    <System:String x:Key="FailedToOpenDirectoryMessage">
+        Fehler beim Öffnen des Verzeichnisses:\n{0}
+    </System:String>
+
+    <System:String x:Key="Error">Fehler</System:String>
+
+</ResourceDictionary>

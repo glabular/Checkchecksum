@@ -48,6 +48,21 @@ public partial class App : Application
             : key;
     }
 
+    public static string GetLocalizedString(string key, params object[] args)
+    {
+        if (Application.Current.Resources.Contains(key))
+        {
+            var raw = Application.Current.Resources[key].ToString();
+
+            // Replace literal "\n" with proper line breaks once
+            raw = raw.Replace(@"\n", Environment.NewLine);
+
+            return string.Format(raw, args);
+        }
+
+        return key;
+    }
+
     private ChecksumsViewModel CreateChecksumsViewModel()
     {
         return new ChecksumsViewModel(_navigationStore, CreateSettingsViewModel);

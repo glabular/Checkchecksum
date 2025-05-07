@@ -10,7 +10,10 @@ public static class LanguageManager
     public static readonly Dictionary<string, string> LanguageMappings = new()
     {
         { "English", "en-US" },
-        { "Русский", "ru-RU" }
+        { "Deutsch", "de-DE" },
+        { "Español", "es-ES" },
+        { "Русский", "ru-RU" },
+        { "Srpski", "sr-RS" }
     };
 
     /// <summary>

@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:System="clr-namespace:System;assembly=System.Runtime">
+                    xmlns:System="clr-namespace:System;assembly=System.Runtime">
     
     <System:String x:Key="DropFileText">Drop file here</System:String>
     <System:String x:Key="CopyAllButton">Copy all</System:String>
@@ -23,5 +23,18 @@
     <System:String x:Key="ErrorReadingFileMessage">Error reading file</System:String>
     <System:String x:Key="CopiedToClipboardMessage">Copied to clipboard</System:String>
     <System:String x:Key="EasterEgg">🎉 You found the Easter Egg!</System:String>
+    <System:String x:Key="OnlyOneFileAllowedTitle">Only one file is allowed to be processed at a time.</System:String>
+    <System:String x:Key="SelectFont">Select Font</System:String>
+    <System:String x:Key="Algorithms">Algorithms</System:String>
+
+    <System:String x:Key="MultipleFilesDroppedMessage">
+        Multiple files dropped.\nDo you want to process the first file?\n{0}
+    </System:String>    
     
+    <System:String x:Key="FailedToOpenDirectoryMessage">
+        Failed to open the directory:\n{0}
+    </System:String>
+    
+    <System:String x:Key="Error">Error</System:String>
+
 </ResourceDictionary>

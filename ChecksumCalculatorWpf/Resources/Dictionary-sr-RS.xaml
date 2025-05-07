@@ -1,0 +1,40 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:System="clr-namespace:System;assembly=System.Runtime">
+
+    <System:String x:Key="DropFileText">Prevucite fajl ovde</System:String>
+    <System:String x:Key="CopyAllButton">Kopiraj sve</System:String>
+    <System:String x:Key="SaveChecksumHeader">Sačuvaj kontrolne sume u fajl</System:String>
+    <System:String x:Key="Enable">Omogući</System:String>
+    <System:String x:Key="DefaultPath">Podrazumevana putanja</System:String>
+    <System:String x:Key="SetPathButton">Postavi</System:String>
+    <System:String x:Key="OpenPathButton">Otvori</System:String>
+    <System:String x:Key="ClearPathButton">Očisti</System:String>
+    <System:String x:Key="FormatLabel">Format</System:String>
+    <System:String x:Key="LanguageHeader">Jezik</System:String>
+    <System:String x:Key="SelectLanguage">Izaberite jezik</System:String>
+    <System:String x:Key="BackButton">⬅ Nazad</System:String>
+    <System:String x:Key="SettingsButton">Podešavanja</System:String>
+    <System:String x:Key="LowercaseCheckbox">Mala slova</System:String>
+    <System:String x:Key="CopyButton">Kopiraj</System:String>
+    <System:String x:Key="SelectAllCheckbox">Označi sve</System:String>
+    <System:String x:Key="NoneSelectedTitle">Nijedno nije označeno</System:String>
+    <System:String x:Key="SelectAlgorithmMessage">Molimo izaberite bar jedan heš algoritam.</System:String>
+    <System:String x:Key="ErrorReadingFileMessage">Greška prilikom čitanja fajla</System:String>
+    <System:String x:Key="CopiedToClipboardMessage">Kopirano u klipbord</System:String>
+    <System:String x:Key="EasterEgg">🎉 Pronašli ste uskrsnje jaje!</System:String>
+    <System:String x:Key="OnlyOneFileAllowedTitle">Dozvoljeno je obraditi samo jedan fajl odjednom.</System:String>
+    <System:String x:Key="SelectFont">Izaberite font</System:String>
+    <System:String x:Key="Algorithms">Algoritmi</System:String>
+
+    <System:String x:Key="MultipleFilesDroppedMessage">
+        Više fajlova je prevučeno.\nŽelite li da obradite prvi?\n{0}
+    </System:String>
+
+    <System:String x:Key="FailedToOpenDirectoryMessage">
+        Neuspelo otvaranje direktorijuma:\n{0}
+    </System:String>
+
+    <System:String x:Key="Error">Greška</System:String>
+
+</ResourceDictionary>

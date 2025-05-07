@@ -23,5 +23,18 @@
     <System:String x:Key="ErrorReadingFileMessage">Ошибка при чтении файла</System:String>
     <System:String x:Key="CopiedToClipboardMessage">Скопировано в буфер</System:String>
     <System:String x:Key="EasterEgg">🎉 Вы нашли пасхалку!</System:String>
+    <System:String x:Key="OnlyOneFileAllowedTitle">Можно обработать только один файл за раз.</System:String>
+    <System:String x:Key="SelectFont">Выберите шрифт</System:String>
+    <System:String x:Key="Algorithms">Алгоритмы</System:String>
+
+    <System:String x:Key="MultipleFilesDroppedMessage">
+        Перетащено несколько файлов.\nВы хотите обработать первый файл?\n{0}
+    </System:String>
+
+    <System:String x:Key="FailedToOpenDirectoryMessage">
+        Не удалось открыть каталог:\n{0}
+    </System:String>
+
+    <System:String x:Key="Error">Ошибка</System:String>
 </ResourceDictionary>
     
